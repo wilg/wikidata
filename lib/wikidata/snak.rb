@@ -17,7 +17,7 @@ module Wikidata
       elsif datavalue['type'] == "globecoordinate"
         Wikidata::DataValues::Globecoordinate.new(datavalue.value)
       elsif datavalue['type'] == 'string'
-        datavalue.value
+        Wikidata::DataValues::String.new({string: datavalue.value})
       else
         datavalue
       end

@@ -26,6 +26,11 @@ module Wikidata
         entity
       end
 
+      def resolved
+        resolve!
+        super
+      end
+
       def to_s
         if @item.nil?
           item_id

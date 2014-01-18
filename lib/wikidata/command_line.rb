@@ -12,15 +12,18 @@ module Wikidata
       if item
         puts "  #{item.label.green}" if item.label
         puts "  #{item.description.cyan}" if item.description
-        puts "  #{item.claims.length} claim(s)" if item.claims
+        puts "  Wikidata ID: #{item.id}"
+        puts "  Claims: #{item.claims.length}" if item.claims
 
         if options[:resolve_properties]
-          table_data = item.resolved_properties.map do |property, datavalue|
-            {property: property.label, property_id: property.id, value: datavalue}
+          table_data = item.claims.map do |claim|
+            { :id => claim.mainsnak.property_id,
+              'Property Label' => claim.mainsnak.property.label,
+              value: claim.mainsnak.value.resolved}
           end
         else
-          table_data = item.simple_properties.map do |k, v|
-            {property_id: k, value: v}
+          table_data = item.claims.map do |claim|
+            {:property_id => claim.mainsnak.property_id, value: claim.mainsnak.value}
           end
         end
 

@@ -34,6 +34,7 @@ module Wikidata
     end
 
     def delocalize(hash, locale = I18n.default_locale)
+      return nil unless hash
       h = hash[locale.to_s]
       h ? h.value : nil
     end

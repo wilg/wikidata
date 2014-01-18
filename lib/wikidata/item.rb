@@ -1,25 +1,8 @@
 module Wikidata
   class Item < Wikidata::Entity
 
-    def self.find_all_by_title title, query = {}
-      query = {
-        action: 'wbgetentities',
-        sites: 'enwiki',
-        titles: title,
-        format: 'json'
-      }.merge(Wikidata.default_languages_hash).merge(query)
-      response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
-      response['entities'].map do |entity_id, entity_hash|
-        new(entity_hash)
-      end
-    end
-
-    def self.find_by_title *args
-      find_all_by_title(*args).first
-    end
-
     def claims
-      @claims ||= self.hash.claims.map do |statement_type, statement_array|
+      @claims ||= self.data_hash.claims.map do |statement_type, statement_array|
         statement_array.map do |statement_hash|
           Wikidata::Statement.new(statement_hash)
         end
@@ -27,9 +10,23 @@ module Wikidata
     end
 
     def simple_properties
+      @simple_properties ||= begin
+        h = {}
+        self.claims.map do |claim|
+          h[claim.mainsnak.property_id] = claim.mainsnak.value
+        end
+        h
+      end
+    end
+
+    def resolved_properties
+      props = simple_properties
       h = {}
-      self.claims.map do |claim|
-        h[claim.mainsnak.property.label] = claim.mainsnak.datavalue.value
+      simple_properties.each do |k, v|
+        if v.class == Wikidata::DataValues::Entity
+          v = v.entity
+        end
+        h[Wikidata::Property.find_by_id(k)] = v
       end
       h
     end

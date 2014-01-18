@@ -1,19 +1,25 @@
 module Wikidata
-  class Snak < Wikidata::Entity
+  class Snak < Wikidata::HashedObject
 
     def property_id
-      hash.property
+      data_hash.property
     end
 
     def property
       @property ||= Wikidata::Property.find_by_id(property_id)
     end
 
-    def value(resolve = true)
-      if datavalue.type == "wikibase-entityid"
-        "#{datavalue.value['entity-type']}/#{datavalue.value['numeric-id']}"
-      elsif datavalue.type == 'string'
-        return datavalue.value
+    def value
+      if datavalue['type'] == "wikibase-entityid"
+        Wikidata::DataValues::Entity.new(datavalue.value)
+      elsif datavalue['type'] == "time"
+        Wikidata::DataValues::Time.new(datavalue.value)
+      elsif datavalue['type'] == "globecoordinate"
+        Wikidata::DataValues::Globecoordinate.new(datavalue.value)
+      elsif datavalue['type'] == 'string'
+        datavalue.value
+      else
+        datavalue
       end
     end
 

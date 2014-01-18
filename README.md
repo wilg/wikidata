@@ -73,9 +73,12 @@ Much better!
 You can use a convenient ActiveRecord-inspired syntax for finding information:
 
 ```ruby
-item = Wikidata::Item.find_by_title "Los Angeles"
-item.id # => "Q65" 
-item.claims.first.mainsnak.property.description => "sovereign state of this item" 
+los_angeles = Wikidata::Item.find_by_title "Los Angeles"
+los_angeles.id # => "Q65"
+
+# Let's find the mayor.
+mayor = los_angeles.claims_for_property_id("P6").first.mainsnak.value.entity
+mayor.label # => "Eric Garcetti"
 ```
 
 That's the basics!

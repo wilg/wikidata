@@ -15,5 +15,9 @@ module Wikidata
       end
     end
 
+    def claims_for_property_id(property_id)
+      claims.select{|c| c.mainsnak.property_id == property_id }
+    end
+
   end
 end

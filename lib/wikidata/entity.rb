@@ -1,11 +1,10 @@
 module Wikidata
   class Entity < Wikidata::HashedObject
 
-    def self.find_all_by_id id, query = {}
+    def self.find_all query
       query = {
         action: 'wbgetentities',
         sites: 'enwiki',
-        ids: id,
         format: 'json'
       }.merge(Wikidata.default_languages_hash).merge(query)
       response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
@@ -14,12 +13,16 @@ module Wikidata
       end
     end
 
+    def self.find_all_by_id id, query = {}
+      find_all({ids: id}.merge(query))
+    end
+
     def self.find_by_id *args
       find_all_by_id(*args).first
     end
 
     def self.find_all_by_title title, query = {}
-      find_all_by_id(nil, query.merge(titles: title))
+      find_all({titles: title}.merge(query))
     end
 
     def self.find_by_title *args

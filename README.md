@@ -1,4 +1,4 @@
-# Wikidata for Ruby
+# Wikidata for Ruby [![Gem Version](https://badge.fury.io/rb/wikidata.png)](http://badge.fury.io/rb/wikidata)
 
 Access all of the wonderful structured data on [Wikidata](http://www.wikidata.org), with Ruby! Also includes a convenient CLI.
 

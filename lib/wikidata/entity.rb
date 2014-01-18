@@ -19,5 +19,10 @@ module Wikidata
       end
     end
 
+    def label(locale = I18n.default_locale)
+      h = self.hash.labels[locale.to_s]
+      h ? h.value : nil
+    end
+
   end
 end

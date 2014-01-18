@@ -17,6 +17,23 @@ module Wikidata
       display_item Wikidata::Item.find_by_id(article_id)
     end
 
+    desc "traverse ARTICLE_NAME relation_name", "find all related items until there are no more"
+    def traverse(article_name, relation_name)
+      item = Wikidata::Item.find_by_title(article_name)
+      if item
+        puts "#{item.label.green} (#{item.id})"
+        while true
+          if collection = item.entities_for_property_id(relation_name)
+            if item = collection.first
+              puts "#{item.label.green} (#{item.id})"
+            else
+              break
+            end
+          end
+        end
+      end
+    end
+
   protected
 
     def display_item(item)

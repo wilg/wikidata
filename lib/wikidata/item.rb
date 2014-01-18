@@ -19,5 +19,18 @@ module Wikidata
       claims.select{|c| c.mainsnak.property_id == property_id }
     end
 
+    def entities_for_property_id(property_id)
+      presets = {
+        mother:   "P25",
+        father:   "P22",
+        children: "P40",
+        doctoral_advisor: "P184"
+      }
+      property_id = presets[property_id.to_sym] if presets.include?(property_id.to_sym)
+      claims_for_property_id(property_id).map{|c| c.mainsnak.value.entity }
+    rescue
+      []
+    end
+
   end
 end

@@ -3,6 +3,7 @@ require 'hashie'
 require 'i18n'
 require "wikidata/version"
 require "wikidata/hashed_object"
+require "wikidata/identity_map"
 require "wikidata/entity"
 require "wikidata/item"
 require "wikidata/property"

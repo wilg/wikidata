@@ -2,14 +2,17 @@ module Wikidata
   class Entity < Wikidata::HashedObject
 
     def self.find_all query
-      query = {
-        action: 'wbgetentities',
-        sites: 'enwiki',
-        format: 'json'
-      }.merge(Wikidata.default_languages_hash).merge(query)
-      response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
-      response['entities'].map do |entity_id, entity_hash|
-        new(entity_hash)
+      Wikidata::IdentityMap.cache "#{query.hash}" do
+        query = {
+          action: 'wbgetentities',
+          sites: 'enwiki',
+          format: 'json'
+        }.merge(Wikidata.default_languages_hash).merge(query)
+        response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
+        # puts "Getting: #{query}"
+        response['entities'].map do |entity_id, entity_hash|
+          new(entity_hash)
+        end
       end
     end
 

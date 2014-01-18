@@ -23,9 +23,7 @@ module Wikidata
       props = simple_properties
       h = {}
       simple_properties.each do |k, v|
-        if v.class == Wikidata::DataValues::Entity
-          v = v.entity
-        end
+        v.resolve! if v.respond_to?(:resolve!)
         h[Wikidata::Property.find_by_id(k)] = v
       end
       h

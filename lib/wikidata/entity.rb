@@ -33,9 +33,17 @@ module Wikidata
       "<#{self.class.to_s} id=#{id}>"
     end
 
-    def label(locale = I18n.default_locale)
-      h = self.data_hash.labels[locale.to_s]
+    def delocalize(hash, locale = I18n.default_locale)
+      h = hash[locale.to_s]
       h ? h.value : nil
+    end
+
+    def label(*args)
+      delocalize self.data_hash.labels, *args
+    end
+
+    def description(*args)
+      delocalize self.data_hash.descriptions, *args
     end
 
   end

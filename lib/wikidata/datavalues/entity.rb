@@ -22,8 +22,16 @@ module Wikidata
         end
       end
 
+      def resolve!
+        entity
+      end
+
       def to_s
-        item_id
+        if @item.nil?
+          item_id
+        else
+          "#{@item.label} (#{item_id})"
+        end
       end
 
     end

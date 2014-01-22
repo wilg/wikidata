@@ -15,6 +15,15 @@ module Wikidata
       end
     end
 
+    def resolve_claims!
+      ids = []
+      claims.each do |claim|
+        ids << claim.mainsnak.property_id
+        ids << claim.mainsnak.value.item_id if claim.mainsnak.value.class == Wikidata::DataValues::Entity
+      end
+      self.class.find_all_by_id ids
+    end
+
     def claims_for_property_id(property_id)
       claims.select{|c| c.mainsnak.property_id == property_id }
     end

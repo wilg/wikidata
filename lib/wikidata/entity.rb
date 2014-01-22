@@ -1,13 +1,58 @@
+require "active_support/core_ext/array"
+
 module Wikidata
   class Entity < Wikidata::HashedObject
 
-    def self.find_all query
-      query = create_query query
-      response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
-      # puts "Getting: #{query}"
-      response['entities'].map do |entity_id, entity_hash|
-        new(entity_hash)
+     def self.find_all query
+
+      found_objects = []
+
+      query = {
+        action: 'wbgetentities',
+        sites: 'enwiki',
+        format: 'json'
+      }.merge(Wikidata.default_languages_hash).merge(query)
+
+      ids = query[:ids] || []
+      titles = query[:titles] || []
+
+      # Split IDs and titles
+      ids = ids.split("|") if ids && ids.class == String
+      titles = titles.split("|") if titles && titles.class == String
+
+      # Reject already cached values
+      fetchable_ids = ids.reject do |id|
+        if val = IdentityMap.cached_value(id)
+          found_objects << val
+          true
+        else
+          false
+        end
       end
+      fetchable_titles = titles.reject do |title|
+        if val = IdentityMap.cached_value(title)
+          found_objects << val
+          true
+        else
+          false
+        end
+      end
+
+      # Fetch by IDs
+      if fetchable_ids.length > 0
+        fetchable_ids.in_groups_of(50, false) do |group|
+          found_objects.concat query_and_build_objects(query.merge(ids: group.join("|")))
+        end
+      end
+
+      # Fetch by titles
+      if fetchable_titles.length > 0
+        fetchable_titles.in_groups_of(50, false) do |group|
+          found_objects.concat query_and_build_objects(query.merge(titles: group.join("|")))
+        end
+      end
+
+      found_objects
     end
 
     def self.wikify_string string
@@ -16,13 +61,23 @@ module Wikidata
       end
     end
 
-    def self.create_query query
-      Wikidata::IdentityMap.cache "#{query.hash}" do
-        query = {
-          action: 'wbgetentities',
-          sites: 'enwiki',
-          format: 'json'
-        }.merge(Wikidata.default_languages_hash).merge(query)
+    def self.query_and_build_objects(query)
+      response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
+      # puts "Getting: #{query}"
+      response['entities'].map do |entity_id, entity_hash|
+        item = new(entity_hash)
+        IdentityMap.cache!(entity_id, item)
+        item
+      end
+    end
+
+    def self.query_and_build_objects(query)
+      response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
+      # puts "Getting: #{query}"
+      response['entities'].map do |entity_id, entity_hash|
+        item = new(entity_hash)
+        IdentityMap.cache!(entity_id, item)
+        item
       end
     end
 
@@ -40,13 +95,13 @@ module Wikidata
 
     def self.find_by_title *args
       response = find_all_by_title(*args).first
+      
       if response.has_content?
         response
       else
         str = wikify_string(args.first)
         puts "response has no content, trying again with #{str}!"
-        arr = [str, args[1..args.size]].flatten!
-        response = find_all_by_title(*arr).first
+        response = find_all_by_title(*[str, args[1..args.size]].flatten!).first
       end
 
     end

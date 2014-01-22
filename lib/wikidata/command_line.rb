@@ -45,6 +45,7 @@ module Wikidata
         puts "  Claims: #{item.claims.length}" if item.claims
         if item.claims.length > 0
           if options[:resolve_properties]
+            item.resolve_claims!
             table_data = item.claims.map do |claim|
               { :id => claim.mainsnak.property_id,
                 'Property Label' => claim.mainsnak.property.label,

@@ -1,15 +1,17 @@
 module Wikidata
   class IdentityMap < Wikidata::HashedObject
 
-    def self.cache(key, &block)
-      @@identity_map ||= {}
-      if cached_value = @@identity_map[key]
-        return cached_value
+    def self.if_uncached(key, &block)
+      if cached = cached_value(key)
+        return cached
       else
-        content = block.call
-        cache! key, content
-        return content
+        block.call
       end
+    end
+
+    def self.cached_value(key)
+      @@identity_map ||= {}
+      @@identity_map[key]
     end
 
     def self.cache!(key, value)

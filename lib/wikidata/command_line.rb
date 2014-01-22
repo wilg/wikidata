@@ -8,7 +8,8 @@ module Wikidata
     desc "find ARTICLE_NAME", "find a Wikidata entity by name"
     method_option :resolve_properties, :default => false, type: :boolean, aliases: "-r"
     def find(article_name)
-      display_item Wikidata::Item.find_by_title(article_name)
+      item =  Wikidata::Item.find_by_title(article_name)
+      display_item item
     end
 
     desc "get ID", "find a Wikidata entity by ID"

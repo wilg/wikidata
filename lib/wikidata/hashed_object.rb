@@ -15,5 +15,9 @@ module Wikidata
       end
     end
 
+    def has_content?
+      data_hash.missing.nil?
+    end
+
   end
 end

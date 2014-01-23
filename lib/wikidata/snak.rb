@@ -17,7 +17,11 @@ module Wikidata
       elsif datavalue['type'] == "globecoordinate"
         Wikidata::DataValues::Globecoordinate.new(datavalue.value)
       elsif datavalue['type'] == 'string'
-        Wikidata::DataValues::String.new({string: datavalue.value})
+        if property.datatype == "commonsMedia"
+          Wikidata::DataValues::CommonsMedia.new({imagename: datavalue.value})
+        else
+          Wikidata::DataValues::String.new({string: datavalue.value})
+        end
       else
         datavalue
       end

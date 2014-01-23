@@ -48,7 +48,8 @@ module Wikidata
             table_data = item.claims.map do |claim|
               { :id => claim.mainsnak.property_id,
                 'Property Label' => claim.mainsnak.property.label,
-                value: claim.mainsnak.value.resolved}
+                value: claim.mainsnak.value.resolved,
+                datatype: claim.mainsnak.property.datatype}
             end
           else
             table_data = item.claims.map do |claim|

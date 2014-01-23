@@ -67,6 +67,9 @@ For internationalization reasons, Wikidata property keys and many of its values 
 
 The CLI will automatically resolve the opaque identifiers by fetching their full descriptions from Wikidata as well. This adds a few more HTTP requests, so if you wish you can also pass `-f` to skip the resolving and return only opaque IDs, like so:
 
+    $ wikidata find "Kyle Chandler" -f
+
+    Kyle Chandler
     Wikidata ID: Q359604
     Claims: 14
     +-------------+---------------------------------------------------------------------+
@@ -110,14 +113,11 @@ sf.image.resolved
 # => an instance of Wikidata::DataValues::CommonsMedia with additional data fetched
 sf.image.resolved.file.urls.file
 # => "http://upload.wikimedia.org/wikipedia/commons/3/3b/San_Francisco_%28Evening%29.jpg"
-
 ```
-
-That's the basics!
 
 ## Contributing
 
-1. Fork it ( http://github.com/<my-github-username>/wikidata/fork )
+1. Fork it ( http://github.com/wilg/wikidata/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

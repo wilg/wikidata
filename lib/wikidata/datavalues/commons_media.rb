@@ -8,6 +8,7 @@ module Wikidata
 
       def resolve!
         query = {image: data_hash.imagename, thumbwidth: 150}
+        puts "Getting: #{query}".yellow if Wikidata.verbose?
         r = HTTParty.get('http://tools.wmflabs.org/magnus-toolserver/commonsapi.php', {query: query})
         @data_hash = Hashie::Mash.new(r['response'].merge({imagename: data_hash.imagename}))
       end

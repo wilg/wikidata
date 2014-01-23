@@ -6,19 +6,25 @@ module Wikidata
   class CommandLine < Thor
 
     desc "find ARTICLE_NAME", "find a Wikidata entity by name"
-    method_option :resolve_properties, :default => false, type: :boolean, aliases: "-r"
+    method_option :fast, :default => false, type: :boolean, aliases: "-f"
+    method_option :verbose, :default => false, type: :boolean, aliases: "-v"
     def find(article_name)
+      apply_options!
       display_item Wikidata::Item.find_by_title(article_name)
     end
 
     desc "get ID", "find a Wikidata entity by ID"
-    method_option :resolve_properties, :default => false, type: :boolean, aliases: "-r"
+    method_option :fast, :default => false, type: :boolean, aliases: "-f"
+    method_option :verbose, :default => false, type: :boolean, aliases: "-v"
     def get(article_id)
+      apply_options!
       display_item Wikidata::Item.find_by_id(article_id)
     end
 
     desc "traverse ARTICLE_NAME relation_name", "find all related items until there are no more"
+    method_option :verbose, :default => false, type: :boolean, aliases: "-v"
     def traverse(article_name, relation_name)
+      apply_options!
       item = Wikidata::Item.find_by_title(article_name)
       if item
         puts "#{item.label.green} (#{item.id})"
@@ -36,6 +42,10 @@ module Wikidata
 
   protected
 
+    def apply_options!
+      Wikidata.verbose = options[:verbose]
+    end
+
     def display_item(item)
       if item
         puts "  #{item.label.green}" if item.label
@@ -43,13 +53,16 @@ module Wikidata
         puts "  Wikidata ID: #{item.id}"
         puts "  Claims: #{item.claims.length}" if item.claims
         if item.claims.length > 0
-          if options[:resolve_properties]
+          if !options[:fast]
             item.resolve_claims!
             table_data = item.claims.map do |claim|
-              { :id => claim.mainsnak.property_id,
+              should_resolve_value = claim.mainsnak.value.class != Wikidata::DataValues::CommonsMedia
+              {
+                :id => claim.mainsnak.property_id,
                 'Property Label' => claim.mainsnak.property.label,
-                value: claim.mainsnak.value.resolved,
-                datatype: claim.mainsnak.property.datatype}
+                value: should_resolve_value ? claim.mainsnak.value.resolved : claim.mainsnak.value
+                # datatype: claim.mainsnak.property.datatype
+              }
             end
           else
             table_data = item.claims.map do |claim|

@@ -57,7 +57,7 @@ module Wikidata
 
     def self.query_and_build_objects(query)
       response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
-      # puts "Getting: #{query}"
+      puts "Getting: #{query}".yellow if Wikidata.verbose?
       response['entities'].map do |entity_id, entity_hash|
         item = new(entity_hash)
         IdentityMap.cache!(entity_id, item)

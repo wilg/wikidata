@@ -41,5 +41,28 @@ module Wikidata
       []
     end
 
+    # Convenience methods
+
+    def image
+      image_claim = claims_for_property_id("P18").first
+      image_claim.mainsnak.value if image_claim
+    end
+
+    def mothers
+      entities_for_property_id :mother
+    end
+
+    def fathers
+      entities_for_property_id :father
+    end
+
+    def children
+      entities_for_property_id :children
+    end
+
+    def doctoral_advisors
+      entities_for_property_id :doctoral_advisor
+    end
+
   end
 end

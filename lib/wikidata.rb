@@ -18,12 +18,22 @@ require "wikidata/datavalues/entity"
 
 module Wikidata
 
+  @@verbose = false
+
   def self.use_only_default_language
     true
   end
 
   def self.default_languages_hash
     use_only_default_language ? {languages: I18n.default_locale} : {}
+  end
+
+  def self.verbose?
+    !!@@verbose
+  end
+
+  def self.verbose=(v)
+    @@verbose = !!v
   end
 
 end

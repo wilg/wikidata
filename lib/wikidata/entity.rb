@@ -71,16 +71,6 @@ module Wikidata
       end
     end
 
-    def self.query_and_build_objects(query)
-      response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
-      # puts "Getting: #{query}"
-      response['entities'].map do |entity_id, entity_hash|
-        item = new(entity_hash)
-        IdentityMap.cache!(entity_id, item)
-        item
-      end
-    end
-
     def self.find_all_by_id id, query = {}
       find_all({ids: id}.merge(query))
     end
@@ -100,8 +90,7 @@ module Wikidata
         response
       else
         str = wikify_string(args.first)
-        puts "response has no content, trying again with #{str}!"
-        response = find_all_by_title(*[str, args[1..args.size]].flatten!).first
+        find_all_by_title(*[str, args[1..args.size]].flatten!).first
       end
 
     end

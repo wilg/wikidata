@@ -13,6 +13,10 @@ module Wikidata
         @data_hash = Hashie::Mash.new(r['response'].merge({imagename: data_hash.imagename}))
       end
 
+      def url
+        resolved.file.urls.file
+      end
+
     end
   end
 end

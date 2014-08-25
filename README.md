@@ -155,7 +155,7 @@ sf.image
 # => an instance of Wikidata::DataValues::CommonsMedia
 sf.image.resolved
 # => an instance of Wikidata::DataValues::CommonsMedia with additional data fetched
-sf.image.resolved.file.urls.file
+sf.image.url
 # => "http://upload.wikimedia.org/wikipedia/commons/3/3b/San_Francisco_%28Evening%29.jpg"
 ```
 

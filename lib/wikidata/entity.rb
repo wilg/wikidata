@@ -14,6 +14,8 @@ module Wikidata
         format: 'json'
       }.merge(Wikidata.default_languages_hash).merge(query)
 
+      query[:languages] = query[:languages].join('|') if query[:languages].is_a? Array
+
       ids = query[:ids] || []
       titles = query[:titles] || []
 

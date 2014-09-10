@@ -2,6 +2,7 @@ require "active_support/core_ext/array"
 
 module Wikidata
   class Entity < Wikidata::HashedObject
+    BASE_URL = 'http://www.wikidata.org/w/api.php'.freeze
 
     def self.find_all query
 
@@ -56,7 +57,7 @@ module Wikidata
     end
 
     def self.query_and_build_objects(query)
-      response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
+      response = HTTParty.get(BASE_URL, {query: query})
       puts "Getting: #{query}".yellow if Wikidata.verbose?
       response['entities'].map do |entity_id, entity_hash|
         item = new(entity_hash)
@@ -89,7 +90,7 @@ module Wikidata
         srlimit: 10,
         srsearch: search
       }.merge(q)
-      response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
+      response = HTTParty.get(BASE_URL, {query: query})
       return [] unless response['query'] || response['query']['search']
       response['query']['search'].map do |r|
         Wikidata::Item.find_by_id r['title']

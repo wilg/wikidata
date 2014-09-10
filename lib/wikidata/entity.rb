@@ -81,6 +81,21 @@ module Wikidata
       find_all_by_title(*args).first
     end
 
+    def self.search search, q = {}
+      query = {
+        action: 'query',
+        list: 'search',
+        format: 'json',
+        srlimit: 10,
+        srsearch: search
+      }.merge(q)
+      response = HTTParty.get('http://www.wikidata.org/w/api.php', {query: query})
+      return [] unless response['query'] || response['query']['search']
+      response['query']['search'].map do |r|
+        Wikidata::Item.find_by_id r['title']
+      end
+    end
+
     def inspect
       "<#{self.class.to_s} id=#{id}>"
     end

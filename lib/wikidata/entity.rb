@@ -101,7 +101,7 @@ module Wikidata
       options = args[:options]
 
       response = HTTParty.get(BASE_URL, {query: query})
-      return [] unless response['query'] || response['query']['search']
+      return [] unless response['query'] && response['query']['search']
       response['query']['search'].map do |r|
         Wikidata::Item.find_by_id r['title'], options
       end

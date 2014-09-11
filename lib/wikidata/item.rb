@@ -48,6 +48,12 @@ module Wikidata
       image_claim.mainsnak.value if image_claim
     end
 
+    def websites
+      website_claims = claims_for_property_id("P856")
+      return [] unless website_claims.present?
+      website_claims.map(&:mainsnak).map(&:value).map(&:string)
+    end
+
     def mothers
       entities_for_property_id :mother
     end

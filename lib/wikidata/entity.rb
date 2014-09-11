@@ -98,7 +98,7 @@ module Wikidata
         srlimit: 10,
         srsearch: search
       }.merge(args[:query] || {})
-      options = args[:options]
+      options = args[:options] || {}
 
       response = HTTParty.get(BASE_URL, {query: query})
       return [] unless response['query'] && response['query']['search']

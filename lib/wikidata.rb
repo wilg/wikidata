@@ -2,6 +2,7 @@ require 'httparty'
 require 'hashie'
 require 'i18n'
 require "wikidata/version"
+require "wikidata/configuration"
 require "wikidata/hashed_object"
 require "wikidata/identity_map"
 require "wikidata/entity"
@@ -18,22 +19,26 @@ require "wikidata/datavalues/entity"
 
 module Wikidata
 
-  @@verbose = false
+  class << self
 
-  def self.use_only_default_language
-    true
+    def configure &block
+      Configuration.configure &block
+    end
+
+    def use_only_default_language?
+      Configuration.use_only_default_language
+    end
+
+    def default_languages_hash
+      use_only_default_language? ? {languages: I18n.default_locale} : {}
+    end
+
+    def verbose?
+      !!Configuration.verbose
+    end
+
+    def verbose=(v)
+      Configuration.verbose = !!v
+    end
   end
-
-  def self.default_languages_hash
-    use_only_default_language ? {languages: I18n.default_locale} : {}
-  end
-
-  def self.verbose?
-    !!@@verbose
-  end
-
-  def self.verbose=(v)
-    @@verbose = !!v
-  end
-
 end

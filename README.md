@@ -159,6 +159,15 @@ sf.image.url
 # => "http://upload.wikimedia.org/wikipedia/commons/3/3b/San_Francisco_%28Evening%29.jpg"
 ```
 
+You can configure some options by creating an initializer like this:
+
+```ruby
+Wikidata.configure do |config|
+  config.use_only_default_language = false
+  config.verbose = true
+end
+```
+
 ## Contributing
 
 1. Fork it ( http://github.com/wilg/wikidata/fork )

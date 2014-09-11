@@ -102,9 +102,7 @@ module Wikidata
 
       response = HTTParty.get(BASE_URL, {query: query})
       return [] unless response['query'] && response['query']['search']
-      response['query']['search'].map do |r|
-        Wikidata::Item.find_by_id r['title'], options
-      end
+      Wikidata::Item.find_all_by_id response['query']['search'].map{|i| i['title']}, options
     end
 
     def inspect

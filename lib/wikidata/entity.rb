@@ -59,9 +59,10 @@ module Wikidata
     end
 
     def self.query_and_build_objects(query)
-      response = HTTParty.get(BASE_URL, {query: query})
+      response = client.get '', query
       puts "Getting: #{query}".yellow if Wikidata.verbose?
-      response['entities'].map do |entity_id, entity_hash|
+      return unless response.status == 200
+      response.body['entities'].map do |entity_id, entity_hash|
         item = new(entity_hash)
         IdentityMap.cache!(entity_id, item)
         item
@@ -100,9 +101,12 @@ module Wikidata
       }.merge(args[:query] || {})
       options = args[:options] || {}
 
-      response = HTTParty.get(BASE_URL, {query: query})
-      return [] unless response['query'] && response['query']['search']
-      Wikidata::Item.find_all_by_id response['query']['search'].map{|i| i['title']}, options
+      response = client.get '', query
+      if response.status == 200 && (items = response.body['query']['search']).present?
+        Wikidata::Item.find_all_by_id items.map{|i| i['title']}, options
+      else
+        []
+      end
     end
 
     def inspect
@@ -121,6 +125,14 @@ module Wikidata
 
     def description(*args)
       delocalize self.data_hash.descriptions, *args
+    end
+
+    def self.client
+      @_client ||= Faraday.new({url: BASE_URL}.merge(Wikidata.client_options)) do |faraday|
+        faraday.request  :url_encoded
+        faraday.response :json, :content_type => /\bjson$/
+        faraday.adapter  :patron
+      end
     end
 
   end

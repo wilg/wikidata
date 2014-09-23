@@ -1,4 +1,5 @@
-require 'httparty'
+require 'faraday'
+require 'faraday_middleware'
 require 'hashie'
 require 'i18n'
 require "wikidata/version"
@@ -39,6 +40,10 @@ module Wikidata
 
     def verbose=(v)
       Configuration.verbose = !!v
+    end
+
+    def client_options
+      Configuration.client_options
     end
   end
 end

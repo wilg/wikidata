@@ -1,7 +1,7 @@
 module Wikidata
   class Configuration
     class << self
-      attr_accessor :verbose, :use_only_default_language
+      attr_accessor :verbose, :use_only_default_language, :client_options
 
       def configure &block
         yield self
@@ -10,5 +10,6 @@ module Wikidata
 
     @verbose = false
     @use_only_default_language = true
+    @client_options = {}
   end
 end

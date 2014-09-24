@@ -165,6 +165,12 @@ You can configure some options by creating an initializer like this:
 Wikidata.configure do |config|
   config.use_only_default_language = false
   config.verbose = true
+  config.client_options = {
+    request: {
+      open_timeout: 1,
+      timeout: 9
+    }
+  }
 end
 ```
 

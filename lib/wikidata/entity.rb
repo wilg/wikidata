@@ -128,7 +128,7 @@ module Wikidata
     end
 
     def self.client
-      @_client ||= Faraday.new({url: BASE_URL}.merge(Wikidata.client_options)) do |faraday|
+      Faraday.new({url: BASE_URL}.merge(Wikidata.client_options)) do |faraday|
         faraday.request  :url_encoded
         faraday.response :json, :content_type => /\bjson$/
         faraday.adapter  :patron

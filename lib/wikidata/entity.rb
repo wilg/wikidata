@@ -61,7 +61,7 @@ module Wikidata
     def self.query_and_build_objects(query)
       response = client.get '', query
       puts "Getting: #{query}".yellow if Wikidata.verbose?
-      return unless response.status == 200
+      return [] unless response.status == 200
       response.body['entities'].map do |entity_id, entity_hash|
         item = new(entity_hash)
         IdentityMap.cache!(entity_id, item)

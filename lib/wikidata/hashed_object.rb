@@ -1,10 +1,13 @@
 module Wikidata
+  class MashSubclass < Hashie::Mash
+    disable_warnings
+  end
   class HashedObject
 
     attr_reader :data_hash
 
     def initialize(data_hash)
-      @data_hash = Hashie::Mash.new(data_hash)
+      @data_hash = MashSubclass.new(data_hash)
     end
 
     def method_missing(meth, *args, &block)

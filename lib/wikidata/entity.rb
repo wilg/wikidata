@@ -131,7 +131,7 @@ module Wikidata
       Faraday.new({url: BASE_URL}.merge(Wikidata.client_options)) do |faraday|
         faraday.request  :url_encoded
         faraday.response :json, :content_type => /\bjson$/
-        faraday.adapter  :patron
+        faraday.adapter  Wikidata::Configuration.faraday_adapter
       end
     end
 

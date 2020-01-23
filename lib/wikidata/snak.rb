@@ -11,7 +11,9 @@ module Wikidata
 
     def value
       @value ||= begin
-        if datavalue['type'] == "wikibase-entityid"
+        if @data_hash['snaktype'] == 'novalue'
+          nil
+        elsif datavalue['type'] == "wikibase-entityid"
           Wikidata::DataValues::Entity.new(datavalue.value)
         elsif datavalue['type'] == "time"
           Wikidata::DataValues::Time.new(datavalue.value)

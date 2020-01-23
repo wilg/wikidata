@@ -165,6 +165,15 @@ You can configure some options by creating an initializer like this:
 Wikidata.configure do |config|
   config.use_only_default_language = false
   config.verbose = true
+  config.faraday_adapter = :typhoeus # default is patron
+  # provide the following methods as easy accessors for
+  # item.entities_for_property_id(:mother)
+  config.property_presets = {
+      mother:   "P25",
+      father:   "P22",
+      children: "P40",
+      doctoral_advisor: "P184"
+    }
   config.client_options = {
     request: {
       open_timeout: 1,

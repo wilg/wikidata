@@ -11,7 +11,7 @@ module Wikidata
     @verbose = false
     @use_only_default_language = true
     @client_options = {}
-    @faraday_adapter = :patron
+    @faraday_adapter = :net_http
     @property_presets = {
       mother: "P25",
       father: "P22",

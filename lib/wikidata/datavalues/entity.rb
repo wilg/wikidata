@@ -1,13 +1,12 @@
 module Wikidata
   module DataValues
     class Entity < Wikidata::DataValues::Value
-
       def kind
-        data_hash['entity-type']
+        data_hash["entity-type"]
       end
 
       def numeric_id
-        data_hash['numeric-id']
+        data_hash["numeric-id"]
       end
 
       def item_id
@@ -15,7 +14,7 @@ module Wikidata
       end
 
       def entity
-        if kind == 'item'
+        if kind == "item"
           @item ||= Wikidata::Item.find_by_id(item_id)
         else
           raise "Unknown entity type"
@@ -33,7 +32,6 @@ module Wikidata
           "#{@item.label} (#{item_id})"
         end
       end
-
     end
   end
 end

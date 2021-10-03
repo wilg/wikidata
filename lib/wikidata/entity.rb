@@ -2,30 +2,29 @@ require "active_support/core_ext/array"
 
 module Wikidata
   class Entity < Wikidata::HashedObject
-    BASE_URL = 'https://www.wikidata.org/w/api.php'.freeze
+    BASE_URL = "https://www.wikidata.org/w/api.php".freeze
 
     def self.find_all query
-
       found_objects = []
 
       query = {
-        action: 'wbgetentities',
-        sites: 'enwiki',
-        format: 'json'
+        action: "wbgetentities",
+        sites: "enwiki",
+        format: "json"
       }.merge(Wikidata.default_languages_hash).merge(query)
 
-      query[:languages] = query[:languages].join('|') if query[:languages].is_a? Array
+      query[:languages] = query[:languages].join("|") if query[:languages].is_a? Array
 
       ids = query[:ids] || []
       titles = query[:titles] || []
 
       # Split IDs and titles
-      ids = ids.split("|") if ids && ids.class == String
-      titles = titles.split("|") if titles && titles.class == String
+      ids = ids.split("|") if ids&.instance_of?(String)
+      titles = titles.split("|") if titles&.instance_of?(String)
 
       # Reject already cached values
       fetchable_ids = ids.reject do |id|
-        if val = IdentityMap.cached_value(id)
+        if (val = IdentityMap.cached_value(id))
           found_objects << val
           true
         else
@@ -33,7 +32,7 @@ module Wikidata
         end
       end
       fetchable_titles = titles.reject do |title|
-        if val = IdentityMap.cached_value(title)
+        if (val = IdentityMap.cached_value(title))
           found_objects << val
           true
         else
@@ -59,10 +58,10 @@ module Wikidata
     end
 
     def self.query_and_build_objects(query)
-      response = client.get '', query
+      response = client.get "", query
       puts "Getting: #{query}" if Wikidata.verbose?
       return [] unless response.status == 200
-      response.body['entities'].map do |entity_id, entity_hash|
+      response.body["entities"].map do |entity_id, entity_hash|
         item = new(entity_hash)
         IdentityMap.cache!(entity_id, item)
         item
@@ -93,24 +92,24 @@ module Wikidata
     # @return <Array>
     def self.search search, args = {}
       query = {
-        action: 'query',
-        list: 'search',
-        format: 'json',
+        action: "query",
+        list: "search",
+        format: "json",
         srlimit: 10,
         srsearch: search
       }.merge(args[:query] || {})
       options = args[:options] || {}
 
-      response = client.get '', query
-      if response.status == 200 && (items = response.body['query']['search']).present?
-        Wikidata::Item.find_all_by_id items.map{|i| i['title']}, options
+      response = client.get "", query
+      if response.status == 200 && (items = response.body["query"]["search"]).present?
+        Wikidata::Item.find_all_by_id items.map { |i| i["title"] }, options
       else
         []
       end
     end
 
     def inspect
-      "<#{self.class.to_s} id=#{id}>"
+      "<#{self.class} id=#{id}>"
     end
 
     def delocalize(hash, locale = I18n.default_locale)
@@ -120,20 +119,19 @@ module Wikidata
     end
 
     def label(*args)
-      delocalize self.data_hash.labels, *args
+      delocalize data_hash.labels, *args
     end
 
     def description(*args)
-      delocalize self.data_hash.descriptions, *args
+      delocalize data_hash.descriptions, *args
     end
 
     def self.client
       Faraday.new({url: BASE_URL}.merge(Wikidata.client_options)) do |faraday|
-        faraday.request  :url_encoded
-        faraday.response :json, :content_type => /\bjson$/
-        faraday.adapter  Wikidata::Configuration.faraday_adapter
+        faraday.request :url_encoded
+        faraday.response :json, content_type: /\bjson$/
+        faraday.adapter Wikidata::Configuration.faraday_adapter
       end
     end
-
   end
 end

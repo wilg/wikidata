@@ -1,7 +1,7 @@
-require 'faraday'
-require 'faraday_middleware'
-require 'hashie'
-require 'i18n'
+require "faraday"
+require "faraday_middleware"
+require "hashie"
+require "i18n"
 require "wikidata/version"
 require "wikidata/configuration"
 require "wikidata/hashed_object"
@@ -20,11 +20,9 @@ require "wikidata/datavalues/entity"
 require "wikidata/datavalues/year"
 
 module Wikidata
-
   class << self
-
     def configure &block
-      Configuration.configure &block
+      Configuration.configure(&block)
     end
 
     def use_only_default_language?

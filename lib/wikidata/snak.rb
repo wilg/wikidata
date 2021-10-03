@@ -1,6 +1,5 @@
 module Wikidata
   class Snak < Wikidata::HashedObject
-
     def property_id
       data_hash.property
     end
@@ -10,36 +9,33 @@ module Wikidata
     end
 
     def value
-      @value ||= begin
-        if @data_hash['snaktype'] == 'novalue'
-          nil
-        elsif datavalue['type'] == "wikibase-entityid"
-          Wikidata::DataValues::Entity.new(datavalue.value)
-        elsif datavalue['type'] == "time"
-          if datavalue.value.precision >= 11
-            Wikidata::DataValues::Time.new(datavalue.value)
-          elsif datavalue.value.precision == 9
-            Wikidata::DataValues::Year.new(datavalue.value)
-          else
-            datavalue
-          end
-        elsif datavalue['type'] == "globecoordinate"
-          Wikidata::DataValues::Globecoordinate.new(datavalue.value)
-        elsif datavalue['type'] == 'string'
-          if property_id == "P18" || (@property && @property.datatype == "commonsMedia")
-            Wikidata::DataValues::CommonsMedia.new({imagename: datavalue.value})
-          else
-            Wikidata::DataValues::String.new({string: datavalue.value})
-          end
+      @value ||= if @data_hash["snaktype"] == "novalue"
+        nil
+      elsif datavalue["type"] == "wikibase-entityid"
+        Wikidata::DataValues::Entity.new(datavalue.value)
+      elsif datavalue["type"] == "time"
+        if datavalue.value.precision >= 11
+          Wikidata::DataValues::Time.new(datavalue.value)
+        elsif datavalue.value.precision == 9
+          Wikidata::DataValues::Year.new(datavalue.value)
         else
           datavalue
         end
+      elsif datavalue["type"] == "globecoordinate"
+        Wikidata::DataValues::Globecoordinate.new(datavalue.value)
+      elsif datavalue["type"] == "string"
+        if property_id == "P18" || (@property && @property.datatype == "commonsMedia")
+          Wikidata::DataValues::CommonsMedia.new({imagename: datavalue.value})
+        else
+          Wikidata::DataValues::String.new({string: datavalue.value})
+        end
+      else
+        datavalue
       end
     end
 
     def inspect
-      "<#{self.class.to_s} type=#{snaktype} property_id=#{property_id}>"
+      "<#{self.class} type=#{snaktype} property_id=#{property_id}>"
     end
-
   end
 end

@@ -13,8 +13,8 @@ module Wikidata
     @client_options = {}
     @faraday_adapter = :patron
     @property_presets = {
-      mother:   "P25",
-      father:   "P22",
+      mother: "P25",
+      father: "P22",
       children: "P40",
       doctoral_advisor: "P184"
     }

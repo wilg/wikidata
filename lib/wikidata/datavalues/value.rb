@@ -1,7 +1,6 @@
 module Wikidata
   module DataValues
     class Value < Wikidata::HashedObject
-
       def resolve!
       end
 
@@ -9,7 +8,6 @@ module Wikidata
         resolve!
         self
       end
-
     end
   end
 end

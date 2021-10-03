@@ -1,17 +1,14 @@
 module Wikidata
   class Item < Wikidata::Entity
-
     def claims
-      @claims ||= begin
-        if self.data_hash.claims
-          self.data_hash.claims.map do |statement_type, statement_array|
-            statement_array.map do |statement_hash|
-              Wikidata::Statement.new(statement_hash)
-            end
-          end.flatten
-        else
-          []
-        end
+      @claims ||= if data_hash.claims
+        data_hash.claims.map do |statement_type, statement_array|
+          statement_array.map do |statement_hash|
+            Wikidata::Statement.new(statement_hash)
+          end
+        end.flatten
+      else
+        []
       end
     end
 
@@ -19,19 +16,19 @@ module Wikidata
       ids = []
       claims.each do |claim|
         ids << claim.mainsnak.property_id
-        ids << claim.mainsnak.value.item_id if claim.mainsnak.value.class == Wikidata::DataValues::Entity
+        ids << claim.mainsnak.value.item_id if claim.mainsnak.value.instance_of?(Wikidata::DataValues::Entity)
       end
       self.class.find_all_by_id ids
     end
 
     def claims_for_property_id(property_id)
-      claims.select{|c| c.mainsnak.property_id == property_id }
+      claims.select { |c| c.mainsnak.property_id == property_id }
     end
 
     def entities_for_property_id(property_id)
       presets = Wikidata::Configuration.property_presets
       property_id = presets[property_id.to_sym] if presets.include?(property_id.to_sym)
-      claims_for_property_id(property_id).map{|c| c.mainsnak.value.entity }
+      claims_for_property_id(property_id).map { |c| c.mainsnak.value.entity }
     rescue
       []
     end
@@ -40,7 +37,7 @@ module Wikidata
 
     def image
       image_claim = claims_for_property_id("P18").first
-      image_claim.mainsnak.value if image_claim
+      image_claim&.mainsnak&.value
     end
 
     def websites
@@ -64,6 +61,5 @@ module Wikidata
     def doctoral_advisors
       entities_for_property_id :doctoral_advisor
     end
-
   end
 end

@@ -17,6 +17,7 @@ require "wikidata/datavalues/commons_media"
 require "wikidata/datavalues/time"
 require "wikidata/datavalues/globecoordinate"
 require "wikidata/datavalues/entity"
+require "wikidata/datavalues/year"
 
 module Wikidata
 

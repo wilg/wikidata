@@ -11,7 +11,7 @@ module Wikidata
     end
 
     def respond_to_missing?(method_name, include_private = false)
-      data_hash.has_key?(meth.to_s)
+      data_hash.has_key?(method_name.to_s)
     end
 
     def method_missing(method_name, *args, &block)

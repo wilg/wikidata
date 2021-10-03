@@ -15,7 +15,7 @@ module Wikidata
           nil
         elsif datavalue['type'] == "wikibase-entityid"
           Wikidata::DataValues::Entity.new(datavalue.value)
-        elsif datavalue['type'] == "time"
+        elsif datavalue['type'] == "time" && datavalue.value.precision >= 11
           Wikidata::DataValues::Time.new(datavalue.value)
         elsif datavalue['type'] == "globecoordinate"
           Wikidata::DataValues::Globecoordinate.new(datavalue.value)

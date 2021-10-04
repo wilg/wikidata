@@ -36,7 +36,10 @@ module Wikidata
     # Convenience methods
 
     def image
-      image_claims = claims_for_property_id("P18") + claims_for_property_id("P154")
+      image_claims = [
+        claims_for_property_id("P18").last,
+        claims_for_property_id("P154").last
+      ].compact
       image_claims.first&.mainsnak&.value
     end
 

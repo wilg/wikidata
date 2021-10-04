@@ -22,6 +22,51 @@ Or install it yourself as:
 
 ### Command Line
 
+To see all options, just type `wikidata`:
+
+    Commands:
+    wikidata find ARTICLE_NAME                    # find a Wikidata entity by name
+    wikidata get ID                               # find a Wikidata entity by ID
+    wikidata help [COMMAND]                       # Describe available commands or one specific command
+    wikidata lucky QUERY                          # searches Wikidata and returns the first matching object
+    wikidata search QUERY                         # searches Wikidata and returns a list of matching objects
+    wikidata traverse ARTICLE_NAME relation_name  # find all related items until there are no more
+
+##### Searching
+
+To search for something:
+
+    › wikidata search "kerrygold"
+    ╭───────────┬─────────────────────────────────┬──────────────╮
+    │ ID        │ Label                           │ Description  │
+    ╞═══════════╪═════════════════════════════════╪══════════════╡
+    │ Q1229505  │ Kerrygold                       │ butter brand │
+    │ Q2755639  │ Kerrygold International Classic │              │
+    │ Q21233172 │ Kerrygold Irish Cream Liqueur   │              │
+    ╰───────────┴─────────────────────────────────┴──────────────╯
+
+You can then get the article like so:
+
+    › wikidata get Q1229505
+    Kerrygold
+    butter brand
+    Wikidata ID: Q1229505
+    Claims: 10
+    ╭───────┬───────────────────────────┬───────────────────────────────╮
+    │ ID    │ Property Label            │ Value                         │
+    ╞═══════╪═══════════════════════════╪═══════════════════════════════╡
+    │ P31   │ instance of               │ trademark (Q167270)           │
+    │       │                           │ food brand (Q16323605)        │
+    │ P2002 │ Twitter username          │ KerrygoldUSA                  │
+    │       │                           │ KerrygoldIRL                  │
+    │       │                           │ KerrygoldUK                   │
+    │ P127  │ owned by                  │ Ornua (Q179410)               │
+    │ P279  │ subclass of               │ butter (Q34172)               │
+    │ P154  │ logo image                │ KG Logo 2010.jpg              │
+    │ P856  │ official website          │ https://www.kerrygoldusa.com/ │
+    │ P2671 │ Google Knowledge Graph ID │ /g/121bj_r0                   │
+    ╰───────┴───────────────────────────┴───────────────────────────────╯
+
 ##### Finding and Fetching
 
 To see all the claims for a particular topic:

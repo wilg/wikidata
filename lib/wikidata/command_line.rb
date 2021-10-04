@@ -13,6 +13,24 @@ module Wikidata
       display_item Wikidata::Item.find_by_title(article_name)
     end
 
+    desc "lucky QUERY", "searches Wikidata and returns the first matching object"
+    method_option :fast, default: false, type: :boolean, aliases: "-f"
+    method_option :verbose, default: false, type: :boolean, aliases: "-v"
+    method_option :show_types, default: false, type: :boolean, aliases: "-t"
+    def lucky(query)
+      apply_options!
+      display_item Wikidata::Entity.search(query).first
+    end
+
+    desc "search QUERY", "searches Wikidata and returns a list of matching objects"
+    method_option :fast, default: false, type: :boolean, aliases: "-f"
+    method_option :verbose, default: false, type: :boolean, aliases: "-v"
+    method_option :show_types, default: false, type: :boolean, aliases: "-t"
+    def search(query)
+      apply_options!
+      display_list Wikidata::Entity.search(query)
+    end
+
     desc "get ID", "find a Wikidata entity by ID"
     method_option :fast, default: false, type: :boolean, aliases: "-f"
     method_option :verbose, default: false, type: :boolean, aliases: "-v"
@@ -45,6 +63,22 @@ module Wikidata
 
     def apply_options!
       Wikidata.verbose = options[:verbose]
+    end
+
+    def display_list(items)
+      rows = items.map do |item|
+        [item.id, item.label, item.description]
+      end
+      table = Terminal::Table.new(
+        headings: ["ID", "Label", "Description"],
+        rows: rows,
+        style: table_style
+      )
+      puts table
+    end
+
+    def table_style
+      {border: :unicode_round}
     end
 
     def display_item(item)
@@ -83,9 +117,8 @@ module Wikidata
           end
           table = Terminal::Table.new(
             headings: headings,
-            rows: nice_data.map { |r| r.values }
-            # Broken until https://github.com/visionmedia/terminal-table/pull/30
-            # style: {width: 80},
+            rows: nice_data.map { |r| r.values },
+            style: table_style
           )
           puts table
         end

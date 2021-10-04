@@ -69,69 +69,132 @@ You can then get the article like so:
 
 ##### Finding and Fetching
 
-To see all the claims for a particular topic:
+To see all the claims for a particular item that you know the name of:
 
-    $ wikidata find "Kyle Chandler"
+    › wikidata find "Kyle Chandler"
 
 This will fetch all the data (called "claims") Wikidata has on superstar actor Kyle Chandler and print it out in the terminal, like so:
 
     Kyle Chandler
     American actor
     Wikidata ID: Q359604
-    Claims: 15
-    +------+------------------------+---------------------------------------------------------------------+
-    | ID   | Property Label         | Value                                                               |
-    +------+------------------------+---------------------------------------------------------------------+
-    | P21  | sex or gender          | male (Q6581097)                                                     |
-    | P27  | country of citizenship | United States of America (Q30)                                      |
-    | P106 | occupation             | actor (Q33999)                                                      |
-    | P373 | Commons category       | Kyle Chandler                                                       |
-    | P214 | VIAF identifier        | 56819238                                                            |
-    | P213 | ISNI (ISO 27729)       | 0000 0001 1444 9499                                                 |
-    | P244 | LCNAF identifier       | no2007102838                                                        |
-    | P227 | GND identifier         | 1016952201                                                          |
-    | P345 | IMDb identifier        | nm0151419                                                           |
-    | P18  | image                  | Kyle Chandler at the Texas Film Hall of Fame Awards, March 2009.jpg |
-    | P31  | instance of            | human (Q5)                                                          |
-    | P19  | place of birth         | Buffalo (Q40435)                                                    |
-    | P569 | date of birth          | 1965-09-17T00:00:00+00:00                                           |
-    | P646 | Freebase identifier    | /m/069nzr                                                           |
-    | P268 | BnF identifier         | 14163323b                                                           |
-    +------+------------------------+---------------------------------------------------------------------+
+    Claims: 58
+    ╭───────┬───────────────────────────────────────┬───────────────────────────────────────╮
+    │ ID    │ Property Label                        │ Value                                 │
+    ╞═══════╪═══════════════════════════════════════╪═══════════════════════════════════════╡
+    │ P27   │ country of citizenship                │ United States of America (Q30)        │
+    │ P106  │ occupation                            │ actor (Q33999)                        │
+    │       │                                       │ film actor (Q10800557)                │
+    │       │                                       │ television actor (Q10798782)          │
+    │       │                                       │ film producer (Q3282637)              │
+    │ P373  │ Commons category                      │ Kyle Chandler                         │
+    │ P214  │ VIAF ID                               │ 56819238                              │
+    │ P213  │ ISNI                                  │ 0000 0001 1444 9499                   │
+    │ P244  │ Library of Congress authority ID      │ no2007102838                          │
+    │ P227  │ GND ID                                │ 1016952201                            │
+    │ P345  │ IMDb ID                               │ nm0151419                             │
+    │ P18   │ image                                 │ Kyle Chandler, March 2009.jpg         │
+    │ P31   │ instance of                           │ human (Q5)                            │
+    │ P19   │ place of birth                        │ Buffalo (Q40435)                      │
+    │ P569  │ date of birth                         │ 1965-09-17T00:00:00+00:00             │
+    │ P646  │ Freebase ID                           │ /m/069nzr                             │
+    │ P735  │ given name                            │ Kyle (Q1326816)                       │
+    │ P1220 │ Internet Broadway Database person ID  │ 71312                                 │
+    │ P1266 │ AlloCiné person ID                    │ 97817                                 │
+    │ P2019 │ AllMovie person ID                    │ p12245                                │
+    │ P2168 │ Swedish Film Database person ID       │ 223629                                │
+    │ P2002 │ Twitter username                      │ kylechandler                          │
+    │ P1649 │ KMDb person ID                        │ 00095263                              │
+    │ P2387 │ Elonet person ID                      │ 969292                                │
+    │ P2435 │ PORT person ID                        │ 27319                                 │
+    │ P2519 │ Scope.dk person ID                    │ 32607                                 │
+    │ P2605 │ ČSFD person ID                        │ 25095                                 │
+    │ P2626 │ Danish National Filmography person ID │ 110657                                │
+    │ P2604 │ Kinopoisk person ID                   │ 28949                                 │
+    │ P734  │ family name                           │ Chandler (Q11259438)                  │
+    │ P3142 │ EDb person ID                         │ n0016406                              │
+    │ P3144 │ elFilm person ID                      │ 3999176                               │
+    │ P3136 │ elCinema person ID                    │ 2009821                               │
+    │ P3305 │ KINENOTE person ID                    │ 200784                                │
+    │ P69   │ educated at                           │ University of Georgia (Q761534)       │
+    │       │                                       │ George Walton Academy (Q5545865)      │
+    │ P2949 │ WikiTree person ID                    │ Chandler-5088                         │
+    │ P1263 │ NNDB people ID                        │ 629/000067428                         │
+    │ P551  │ residence                             │ Dripping Springs (Q951210)            │
+    │ P4985 │ TMDb person ID                        │ 3497                                  │
+    │ P269  │ IdRef ID                              │ 157064751                             │
+    │ P5534 │ Open Media Database person ID         │ 3497                                  │
+    │ P1006 │ Nationale Thesaurus voor Auteurs ID   │ 314141863                             │
+    │ P3417 │ Quora topic ID                        │ Kyle-Chandler-actor                   │
+    │ P21   │ sex or gender                         │ male (Q6581097)                       │
+    │ P268  │ Bibliothèque nationale de France ID   │ 14163323b                             │
+    │ P691  │ NKCR AUT ID                           │ xx0155549                             │
+    │ P7214 │ Allcinema person ID                   │ 63597                                 │
+    │ P1343 │ described by source                   │ Obalky knih.cz (Q67311526)            │
+    │ P7859 │ WorldCat Identities ID                │ lccn-no2007102838                     │
+    │ P1580 │ University of Barcelona authority ID  │ a1392541                              │
+    │ P2031 │ work period (start)                   │ 1988                                  │
+    │ P5033 │ Filmweb.pl person ID                  │ 63637                                 │
+    │ P1207 │ NUKAT ID                              │ n2019020135                           │
+    │ P8687 │ social media followers                │                                       │
+    │ P5905 │ Comic Vine ID                         │ 4040-84681                            │
+    │ P5421 │ Trading Card Database person ID       │ 164090                                │
+    ╰───────┴───────────────────────────────────────┴───────────────────────────────────────╯
 
 For internationalization reasons, Wikidata property keys and many of its values are not human readable by default. (For example, the place of birth property is actually "P19".)
 
 The CLI will automatically resolve the opaque identifiers by fetching their full descriptions from Wikidata as well. This adds a few more HTTP requests, so if you wish you can also pass `-f` to skip the resolving and return only opaque IDs, like so:
 
-    $ wikidata find "Kyle Chandler" -f
-
+    › wikidata find "Kyle Chandler" -f
     Kyle Chandler
     American actor
     Wikidata ID: Q359604
-    Claims: 15
-    +-------------+---------------------------------------------------------------------+
-    | Property ID | Value                                                               |
-    +-------------+---------------------------------------------------------------------+
-    | P21         | Q6581097                                                            |
-    | P27         | Q30                                                                 |
-    | P106        | Q33999                                                              |
-    | P373        | Kyle Chandler                                                       |
-    | P214        | 56819238                                                            |
-    | P213        | 0000 0001 1444 9499                                                 |
-    | P244        | no2007102838                                                        |
-    | P227        | 1016952201                                                          |
-    | P345        | nm0151419                                                           |
-    | P18         | Kyle Chandler at the Texas Film Hall of Fame Awards, March 2009.jpg |
-    | P31         | Q5                                                                  |
-    | P19         | Q40435                                                              |
-    | P569        | 1965-09-17T00:00:00+00:00                                           |
-    | P646        | /m/069nzr                                                           |
-    | P268        | 14163323b                                                           |
-    +-------------+---------------------------------------------------------------------+
+    Claims: 58
+    ╭─────────────┬─────────────────────────────────────────────────────────╮
+    │ Property ID │ Value                                                   │
+    ╞═════════════╪═════════════════════════════════════════════════════════╡
+    │ P27         │ Q30                                                     │
+    │ P106        │ Q33999                                                  │
+    │             │ Q10800557                                               │
+    │             │ Q10798782                                               │
+    │             │ Q3282637                                                │
+    │ P373        │ Kyle Chandler                                           │
+    │ P214        │ 56819238                                                │
+    │ P213        │ 0000 0001 1444 9499                                     │
+    │ P244        │ no2007102838                                            │
+    │ P227        │ 1016952201                                              │
+    │ P345        │ nm0151419                                               │
+    │ P18         │ Kyle Chandler, March 2009.jpg                           │
+    │ P31         │ Q5                                                      │
+    │ P19         │ Q40435                                                  │
+    │ P569        │ 1965-09-17T00:00:00+00:00                               │
+    │ P646        │ /m/069nzr                                               │
+    │ P735        │ Q1326816                                                │
+    │ P1220       │ 71312                                                   │
+    │ P1266       │ 97817                                                   │
+    │ P2019       │ p12245                                                  │
+    │ P2168       │ 223629                                                  │
+    │ P2002       │ kylechandler                                            │
+    │ P1649       │ 00095263                                                │
+    │ P2949       │ Chandler-5088                                           │
+    │ P1263       │ 629/000067428                                           │
+    │ P551        │ Q951210                                                 │
+    │ P691        │ xx0155549                                               │
+    │ P7214       │ 63597                                                   │
+    │ P1343       │ Q67311526                                               │
+    │ P7859       │ lccn-no2007102838                                       │
+    │ P1580       │ a1392541                                                │
+    │ P2031       │ 1988                                                    │
+    │ P5033       │ 63637                                                   │
+    │ P1207       │ n2019020135                                             │
+    │ P166        │ Q989439                                                 │
+    │ P5905       │ 4040-84681                                              │
+    │ P5421       │ 164090                                                  │
+    ╰─────────────┴─────────────────────────────────────────────────────────╯
 
 If we'd already known Kyle's Wikidata identifier, we could have done
 
-    $ wikidata get Q359604
+    › wikidata get Q359604
 
 and gotten the same results.
 
@@ -139,7 +202,7 @@ and gotten the same results.
 
 We can also traverse properties. Let's say we wanted to see that stupid royal baby's paternal lineage:
 
-    $ wikidata traverse "Prince George of Cambridge" father
+    › wikidata traverse "Prince George of Cambridge" father
 
 This will continue following links to the specified property, until an entity doesn't contain it. This example will return:
 

@@ -5,15 +5,8 @@ module Wikidata
         data_hash.imagename
       end
 
-      def resolve!
-        query = {image: data_hash.imagename, thumbwidth: 150}
-        puts "Getting: #{query}".yellow if Wikidata.verbose?
-        r = Faraday.get("http://tools.wmflabs.org/magnus-toolserver/commonsapi.php", query)
-        @data_hash = Hashie::Mash.new(r.body["response"].merge({imagename: data_hash.imagename}))
-      end
-
-      def url
-        resolved.file.urls.file
+      def url(width: nil)
+        "https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/#{CGI.escape(data_hash.imagename)}&width=#{width || ""}"
       end
     end
   end

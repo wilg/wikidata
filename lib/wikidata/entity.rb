@@ -63,7 +63,7 @@ module Wikidata
       return [] unless response.status == 200
       response.body["entities"].map do |entity_id, entity_hash|
         if entity_id.to_i != -1
-          item = new(entity_hash)
+          item = Wikidata::Item.new(entity_hash)
           IdentityMap.cache!(entity_id, item)
           item
         end
@@ -111,7 +111,7 @@ module Wikidata
     end
 
     def inspect
-      "<#{self.class} id=#{id}>"
+      "<#{self.class} id=#{id} label=#{label.inspect}>"
     end
 
     def delocalize(hash, locale = I18n.default_locale)

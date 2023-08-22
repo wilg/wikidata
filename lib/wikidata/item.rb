@@ -54,7 +54,7 @@ module Wikidata
     end
 
     def entity_instance_of?(entity_id, **kwargs)
-      instance_of.subclass_of?(entity_id, **kwargs)
+      instance_of&.subclass_of?(entity_id, **kwargs) || false
     end
 
     def image

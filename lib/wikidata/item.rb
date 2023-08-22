@@ -35,6 +35,28 @@ module Wikidata
 
     # Convenience methods
 
+    def instance_of
+      entities_for_property_id(:instance_of).first
+    end
+
+    def subclass_of
+      entities_for_property_id(:subclass_of)
+    end
+
+    def subclass_of?(entity_id, current_depth: 0, depth: 0)
+      return true if entity_id.is_a?(Array) ? entity_id.include?(id) : id == entity_id
+      return false if current_depth >= depth
+
+      subclass_of.each do |entity|
+        return true if entity.subclass_of?(entity_id, current_depth: current_depth + 1)
+      end
+      false
+    end
+
+    def entity_instance_of?(entity_id, **kwargs)
+      instance_of.subclass_of?(entity_id, **kwargs)
+    end
+
     def image
       image_claims = [
         claims_for_property_id("P18").last,

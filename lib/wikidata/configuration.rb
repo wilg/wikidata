@@ -16,7 +16,9 @@ module Wikidata
       mother: "P25",
       father: "P22",
       children: "P40",
-      doctoral_advisor: "P184"
+      doctoral_advisor: "P184",
+      instance_of: "P31",
+      subclass_of: "P279",
     }
   end
 end

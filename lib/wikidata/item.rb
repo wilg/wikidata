@@ -36,7 +36,7 @@ module Wikidata
     # Convenience methods
 
     def instance_of
-      entities_for_property_id(:instance_of).first
+      entities_for_property_id(:instance_of)
     end
 
     def subclass_of
@@ -44,7 +44,7 @@ module Wikidata
     end
 
     def subclass_of?(entity_id, current_depth: 0, depth: 0)
-      return true if entity_id.is_a?(Array) ? entity_id.include?(id) : id == entity_id
+      return true if Array.wrap(entity_id).include?(id)
       return false if current_depth >= depth
 
       subclass_of.each do |entity|
@@ -54,7 +54,12 @@ module Wikidata
     end
 
     def entity_instance_of?(entity_id, **kwargs)
-      instance_of&.subclass_of?(entity_id, **kwargs) || false
+      return true if Array.wrap(entity_id).include?(id)
+
+      io = instance_of
+      return false if io.blank?
+
+      instance_of.any? { |entity| entity.subclass_of?(entity_id, **kwargs) } || false
     end
 
     def image

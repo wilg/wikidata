@@ -43,25 +43,40 @@ module Wikidata
       entities_for_property_id(:subclass_of)
     end
 
-    def subclass_of?(entity_id, current_depth: 0, depth: 0)
+    def subclass_of?(entity_id, depth: 0)
       return true if Array.wrap(entity_id).include?(id)
-      return false if current_depth >= depth
+      return false if depth <= 0
 
-      subclass_of.each do |entity|
-        return true if entity.subclass_of?(entity_id, current_depth: current_depth + 1)
+      subclass_of.any? do |entity|
+        entity.subclass_of?(entity_id, depth: depth - 1)
       end
+    end
+
+    def entity_instance_of?(entity_id, depth: 0)
+      return true if Array.wrap(entity_id).include?(id)
+      return false if depth <= 0
+
+      instance_of.any? { |entity| entity.subclass_of?(entity_id, depth: depth - 1) }
+    end
+
+    def instance_or_subclass_of?(entity_ids, depth: 0)
+      entity_ids = Array.wrap(entity_ids)
+      return true if entity_ids.include?(id)
+
+      queue = instance_of + subclass_of
+      current_depth = 0
+
+      while current_depth < depth && !queue.empty?
+        current_entity = queue.shift
+
+        return true if entity_ids.include?(current_entity.id)
+
+        queue.concat(current_entity.instance_of + current_entity.subclass_of)
+        current_depth += 1
+      end
+
       false
     end
-
-    def entity_instance_of?(entity_id, **kwargs)
-      return true if Array.wrap(entity_id).include?(id)
-
-      io = instance_of
-      return false if io.blank?
-
-      instance_of.any? { |entity| entity.subclass_of?(entity_id, **kwargs) } || false
-    end
-
     def image
       image_claims = [
         claims_for_property_id("P18").last,

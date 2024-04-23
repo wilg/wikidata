@@ -9,7 +9,7 @@ module Wikidata
     end
 
     def value
-      @value ||= if @data_hash["snaktype"] == "novalue"
+      @value ||= if @data_hash["snaktype"] == "novalue" || @data_hash["snaktype"] == "somevalue" || @data_hash["datavalue"].nil?
         nil
       elsif datavalue["type"] == "wikibase-entityid"
         Wikidata::DataValues::Entity.new(datavalue.value)

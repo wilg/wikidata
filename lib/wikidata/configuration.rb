@@ -6,6 +6,14 @@ module Wikidata
       def configure &block
         yield self
       end
+
+      def faraday(&block)
+        @faraday = block
+      end
+
+      def apply_faraday(faraday)
+        @faraday&.call(faraday)
+      end
     end
 
     @verbose = false

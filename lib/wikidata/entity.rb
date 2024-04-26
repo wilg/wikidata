@@ -58,8 +58,7 @@ module Wikidata
     end
 
     def self.query_and_build_objects(query)
-      response = client.get "", query
-      puts "Getting: #{query}" if Wikidata.verbose?
+      response = get "", query
       return [] unless response.status == 200
       response.body["entities"].map do |entity_id, entity_hash|
         if entity_id.to_i != -1
@@ -102,7 +101,7 @@ module Wikidata
       }.merge(args[:query] || {})
       options = args[:options] || {}
 
-      response = client.get "", query
+      response = get "", query
       if response.status == 200 && (items = response.body["query"]["search"]).present?
         Wikidata::Item.find_all_by_id items.map { |i| i["title"] }, options
       else
@@ -128,11 +127,18 @@ module Wikidata
       delocalize data_hash.descriptions, *args
     end
 
+    def self.get(*args)
+      res = client.get(*args)
+      puts "[Wikidata] #{res.env.url}" if Wikidata.verbose?
+      res
+    end
+
     def self.client
       Faraday.new({url: BASE_URL}.merge(Wikidata.client_options)) do |faraday|
         faraday.request :url_encoded
         faraday.response :json, content_type: /\bjson$/
         faraday.adapter Wikidata::Configuration.faraday_adapter
+        Configuration.apply_faraday(faraday)
       end
     end
   end

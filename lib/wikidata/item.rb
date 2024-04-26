@@ -65,7 +65,7 @@ module Wikidata
       entity_ids = Array.wrap(entity_ids)
       return true if entity_ids.include?(id)
 
-      queue = Entity.find_all_by_id(entities_for_property_id(:instance_of) + entities_for_property_id(:subclass_of))
+      queue = Entity.find_all_by_id(item_ids_for_property_id(:instance_of) + item_ids_for_property_id(:subclass_of))
       current_depth = 0
 
       while current_depth < depth && !queue.empty?
@@ -73,7 +73,7 @@ module Wikidata
 
         return true if entity_ids.include?(current_entity.id)
 
-        queue.concat(Entity.find_all_by_id(current_entity.entities_for_property_id(:instance_of) + current_entity.entities_for_property_id(:subclass_of)))
+        queue.concat(Entity.find_all_by_id(current_entity.item_ids_for_property_id(:instance_of) + current_entity.item_ids_for_property_id(:subclass_of)))
         current_depth += 1
       end
 

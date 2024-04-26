@@ -26,11 +26,13 @@ module Wikidata
     end
 
     def entities_for_property_id(property_id)
+      Wikidata::Item.find_all_by_id(item_ids_for_property_id(property_id))
+    end
+
+    def item_ids_for_property_id(property_id)
       presets = Wikidata::Configuration.property_presets
       property_id = presets[property_id.to_sym] if presets.include?(property_id.to_sym)
-      claims_for_property_id(property_id).map { |c| c.mainsnak.value.entity }
-    rescue
-      []
+      claims_for_property_id(property_id).map { |c| c.mainsnak.value.item_id }
     end
 
     # Convenience methods
@@ -63,7 +65,7 @@ module Wikidata
       entity_ids = Array.wrap(entity_ids)
       return true if entity_ids.include?(id)
 
-      queue = instance_of + subclass_of
+      queue = Entity.find_all_by_id(entities_for_property_id(:instance_of) + entities_for_property_id(:subclass_of))
       current_depth = 0
 
       while current_depth < depth && !queue.empty?
@@ -71,12 +73,13 @@ module Wikidata
 
         return true if entity_ids.include?(current_entity.id)
 
-        queue.concat(current_entity.instance_of + current_entity.subclass_of)
+        queue.concat(Entity.find_all_by_id(current_entity.entities_for_property_id(:instance_of) + current_entity.entities_for_property_id(:subclass_of)))
         current_depth += 1
       end
 
       false
     end
+
     def image
       image_claims = [
         claims_for_property_id("P18").last,

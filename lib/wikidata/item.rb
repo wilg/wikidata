@@ -32,7 +32,7 @@ module Wikidata
     def item_ids_for_property_id(property_id)
       presets = Wikidata::Configuration.property_presets
       property_id = presets[property_id.to_sym] if presets.include?(property_id.to_sym)
-      claims_for_property_id(property_id).map { |c| c.mainsnak.value.item_id }
+      claims_for_property_id(property_id).map { |c| c.mainsnak.value&.item_id }.compact
     end
 
     # Convenience methods

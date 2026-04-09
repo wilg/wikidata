@@ -1,5 +1,7 @@
 module Wikidata
   class IdentityMap < Wikidata::HashedObject
+    CACHE_PREFIX = "wikidata:entity:".freeze
+
     def self.if_uncached(key, &block)
       if (cached = cached_value(key))
         cached
@@ -9,13 +11,22 @@ module Wikidata
     end
 
     def self.cached_value(key)
-      @@identity_map ||= {}
-      @@identity_map[key]
+      if (store = Configuration.cache_store)
+        raw = store.read("#{CACHE_PREFIX}#{key}")
+        raw && Wikidata::Item.new(raw)
+      else
+        @@identity_map ||= {}
+        @@identity_map[key]
+      end
     end
 
     def self.cache!(key, value)
-      @@identity_map ||= {}
-      @@identity_map[key] = value
+      if (store = Configuration.cache_store)
+        store.write("#{CACHE_PREFIX}#{key}", value.data_hash.to_h, expires_in: Configuration.cache_ttl)
+      else
+        @@identity_map ||= {}
+        @@identity_map[key] = value
+      end
     end
   end
 end

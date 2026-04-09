@@ -25,6 +25,16 @@ module Wikidata
       claims.select { |c| c.mainsnak.property_id == property_id }
     end
 
+    # Returns claims for a property sorted by rank: preferred first, deprecated excluded.
+    # If any preferred-rank claims exist, only those are returned.
+    # Otherwise, normal-rank claims are returned (deprecated are always excluded).
+    def ranked_claims_for_property_id(property_id)
+      all = claims_for_property_id(property_id)
+      preferred = all.select { |c| c.data_hash["rank"] == "preferred" }
+      return preferred if preferred.any?
+      all.reject { |c| c.data_hash["rank"] == "deprecated" }
+    end
+
     def entities_for_property_id(property_id)
       Wikidata::Item.find_all_by_id(item_ids_for_property_id(property_id))
     end

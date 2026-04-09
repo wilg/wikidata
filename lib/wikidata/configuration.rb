@@ -1,7 +1,8 @@
 module Wikidata
   class Configuration
     class << self
-      attr_accessor :verbose, :use_only_default_language, :client_options, :property_presets, :faraday_adapter
+      attr_accessor :verbose, :use_only_default_language, :client_options, :property_presets, :faraday_adapter,
+        :cache_store, :cache_ttl
 
       def configure &block
         yield self
@@ -20,6 +21,8 @@ module Wikidata
     @use_only_default_language = true
     @client_options = {}
     @faraday_adapter = :net_http
+    @cache_store = nil
+    @cache_ttl = 3600
     @property_presets = {
       mother: "P25",
       father: "P22",

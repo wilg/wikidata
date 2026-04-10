@@ -121,6 +121,41 @@ class EntityTest < Minitest::Test
     Wikidata::Configuration.property_presets = original_presets
   end
 
+  def test_raises_rate_limit_error_on_429
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("ids" => "Q42"))
+      .to_return(status: 429, headers: {"Retry-After" => "1"})
+
+    original = Wikidata::Configuration.max_retries
+    Wikidata::Configuration.max_retries = 0
+
+    err = assert_raises(Wikidata::RateLimitError) do
+      Wikidata::Item.find_all_by_id("Q42")
+    end
+    assert_equal 429, err.status
+    assert_equal 1, err.retry_after
+  ensure
+    Wikidata::Configuration.max_retries = original
+  end
+
+  def test_retries_on_429
+    call_count = 0
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("ids" => "Q42"))
+      .to_return do
+        call_count += 1
+        if call_count == 1
+          {status: 429, headers: {"Retry-After" => "0"}}
+        else
+          {status: 200, body: JSON.generate({"entities" => {"Q42" => {"id" => "Q42"}}}), headers: {"Content-Type" => "application/json"}}
+        end
+      end
+
+    items = Wikidata::Item.find_all_by_id("Q42")
+    assert_equal 1, items.length
+    assert_equal 2, call_count
+  end
+
   def test_client_is_faraday_connection
     client = Wikidata::Entity.client
     assert_instance_of Faraday::Connection, client

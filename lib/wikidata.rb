@@ -39,6 +39,25 @@ module Wikidata
 
   class NotFoundError < Error; end
 
+  class MaxlagError < Error
+    attr_reader :lag, :retry_after
+
+    def initialize(lag, retry_after)
+      @lag = lag
+      @retry_after = retry_after
+      super("Wikidata server lagged #{lag}s, retry after #{retry_after}s")
+    end
+  end
+
+  class RateLimitError < HttpError
+    attr_reader :retry_after
+
+    def initialize(url, retry_after)
+      @retry_after = retry_after
+      super(429, url)
+    end
+  end
+
   class << self
     def configure(&block)
       Configuration.configure(&block)

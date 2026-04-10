@@ -6,7 +6,7 @@ module Wikidata
   class Configuration
     class << self
       attr_accessor :verbose, :use_only_default_language, :client_options, :property_presets, :faraday_adapter,
-        :cache_store, :cache_ttl, :logger, :user_agent, :maxlag
+        :cache_store, :cache_ttl, :logger, :user_agent, :maxlag, :max_retries
 
       def configure(&block)
         yield self
@@ -28,6 +28,7 @@ module Wikidata
     @cache_store = nil
     @cache_ttl = 3600
     @logger = Logger.new($stdout, level: Logger::WARN)
+    @max_retries = 3
     @property_presets = {
       mother: "P25",
       father: "P22",

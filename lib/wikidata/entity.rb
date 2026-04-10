@@ -154,11 +154,34 @@ module Wikidata
     end
 
     def self.get(*args)
-      res = client.get(*args)
-      if Wikidata.verbose?
-        Configuration.logger.debug { "[Wikidata] #{res.env.url}" }
+      retries = 0
+      begin
+        res = client.get(*args)
+        Configuration.logger.debug { "[Wikidata] #{res.env.url}" } if Wikidata.verbose?
+
+        if res.status == 429
+          retry_after = res.headers["retry-after"]&.to_i || 5
+          raise Wikidata::RateLimitError.new(res.env.url.to_s, retry_after)
+        end
+
+        # maxlag errors return HTTP 200 with error in body
+        if res.body.is_a?(Hash) && res.body.dig("error", "code") == "maxlag"
+          lag = res.body.dig("error", "lag")
+          retry_after = res.headers["retry-after"]&.to_i || 5
+          raise Wikidata::MaxlagError.new(lag, retry_after)
+        end
+
+        res
+      rescue Wikidata::RateLimitError, Wikidata::MaxlagError => e
+        if retries < Configuration.max_retries
+          retries += 1
+          Configuration.logger.warn { "[Wikidata] #{e.message}, retry #{retries}/#{Configuration.max_retries}" }
+          sleep(e.retry_after)
+          retry
+        else
+          raise
+        end
       end
-      res
     end
 
     def self.default_user_agent

@@ -2,6 +2,35 @@
 
 module Wikidata
   class Snak < Wikidata::HashedObject
+    @value_handlers = {}
+
+    def self.register_value_handler(type, &block)
+      @value_handlers[type] = block
+    end
+
+    def self.value_handlers
+      @value_handlers
+    end
+
+    register_value_handler("wikibase-entityid") { |dv, _snak| DataValues::Entity.new(dv.value) }
+    register_value_handler("time") do |dv, _snak|
+      if dv.value.precision >= 11
+        DataValues::Time.new(dv.value)
+      else
+        DataValues::Year.new(dv.value)
+      end
+    end
+    register_value_handler("quantity") { |dv, _snak| DataValues::Quantity.new(dv.value) }
+    register_value_handler("monolingualtext") { |dv, _snak| DataValues::MonolingualText.new(dv.value) }
+    register_value_handler("globecoordinate") { |dv, _snak| DataValues::Globecoordinate.new(dv.value) }
+    register_value_handler("string") do |dv, snak|
+      if snak.datatype == "commonsMedia"
+        DataValues::CommonsMedia.new({imagename: dv.value})
+      else
+        DataValues::String.new({string: dv.value})
+      end
+    end
+
     def property_id
       data_hash.property
     end
@@ -29,26 +58,8 @@ module Wikidata
         Wikidata::DataValues::SomeValue.new({})
       elsif @data_hash["datavalue"].nil?
         nil
-      elsif datavalue["type"] == "wikibase-entityid"
-        Wikidata::DataValues::Entity.new(datavalue.value)
-      elsif datavalue["type"] == "time"
-        if datavalue.value.precision >= 11
-          Wikidata::DataValues::Time.new(datavalue.value)
-        else
-          Wikidata::DataValues::Year.new(datavalue.value)
-        end
-      elsif datavalue["type"] == "quantity"
-        Wikidata::DataValues::Quantity.new(datavalue.value)
-      elsif datavalue["type"] == "monolingualtext"
-        Wikidata::DataValues::MonolingualText.new(datavalue.value)
-      elsif datavalue["type"] == "globecoordinate"
-        Wikidata::DataValues::Globecoordinate.new(datavalue.value)
-      elsif datavalue["type"] == "string"
-        if datatype == "commonsMedia"
-          Wikidata::DataValues::CommonsMedia.new({imagename: datavalue.value})
-        else
-          Wikidata::DataValues::String.new({string: datavalue.value})
-        end
+      elsif (handler = self.class.value_handlers[datavalue["type"]])
+        handler.call(datavalue, self)
       else
         datavalue
       end

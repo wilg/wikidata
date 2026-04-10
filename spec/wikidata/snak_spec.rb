@@ -196,6 +196,18 @@ class SnakTest < Minitest::Test
     assert_equal 1800, snak.value.to_i
   end
 
+  def test_custom_value_handler
+    Wikidata::Snak.register_value_handler("custom-test") { |dv, _snak| dv.value }
+
+    snak = make_snak("snaktype" => "value", "property" => "P999", "datavalue" => {
+      "value" => "custom_result",
+      "type" => "custom-test"
+    })
+    assert_equal "custom_result", snak.value
+  ensure
+    Wikidata::Snak.value_handlers.delete("custom-test")
+  end
+
   def test_inspect
     snak = make_snak("snaktype" => "value", "property" => "P31", "datavalue" => {
       "value" => {"entity-type" => "item", "numeric-id" => 515},

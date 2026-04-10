@@ -11,7 +11,7 @@ module Wikidata
         action: "wbgetentities",
         sites: "enwiki",
         format: "json"
-      }.merge(Wikidata.default_languages_hash).merge(query)
+      }.merge(default_query_params).merge(Wikidata.default_languages_hash).merge(query)
 
       query[:languages] = query[:languages].join("|") if query[:languages].is_a? Array
 
@@ -100,7 +100,7 @@ module Wikidata
         format: "json",
         srlimit: 10,
         srsearch: search
-      }.merge(args[:query] || {})
+      }.merge(default_query_params).merge(args[:query] || {})
       options = args[:options] || {}
 
       response = get "", query
@@ -145,6 +145,12 @@ module Wikidata
 
     def sitelink(site = "enwiki")
       data_hash.sitelinks&.dig(site)
+    end
+
+    def self.default_query_params
+      params = {}
+      params[:maxlag] = Configuration.maxlag if Configuration.maxlag
+      params
     end
 
     def self.get(*args)

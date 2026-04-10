@@ -35,6 +35,26 @@ class ConfigurationTest < Minitest::Test
     assert hash.key?(:languages)
   end
 
+  def test_maxlag_included_in_queries
+    original = Wikidata::Configuration.maxlag
+    Wikidata::Configuration.maxlag = 5
+
+    params = Wikidata::Entity.default_query_params
+    assert_equal 5, params[:maxlag]
+  ensure
+    Wikidata::Configuration.maxlag = original
+  end
+
+  def test_maxlag_omitted_when_nil
+    original = Wikidata::Configuration.maxlag
+    Wikidata::Configuration.maxlag = nil
+
+    params = Wikidata::Entity.default_query_params
+    refute params.key?(:maxlag)
+  ensure
+    Wikidata::Configuration.maxlag = original
+  end
+
   def test_default_logger
     assert_instance_of Logger, Wikidata::Configuration.logger
   end

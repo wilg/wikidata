@@ -24,7 +24,28 @@ class DataValuesTimeTest < Minitest::Test
 
   def test_to_s
     val = Wikidata::DataValues::Time.new("time" => "+2024-01-15T00:00:00Z", "precision" => 11)
-    assert_includes val.to_s, "2024"
+    assert_equal "2024-01-15", val.to_s
+  end
+
+  def test_precision_accessor
+    val = Wikidata::DataValues::Time.new("time" => "+2024-01-15T00:00:00Z", "precision" => 11)
+    assert_equal 11, val.precision
+  end
+
+  def test_julian_calendar
+    val = Wikidata::DataValues::Time.new(
+      "time" => "+0100-07-12T00:00:00Z", "precision" => 11,
+      "calendarmodel" => "http://www.wikidata.org/entity/Q1985786"
+    )
+    assert val.julian?
+  end
+
+  def test_gregorian_calendar
+    val = Wikidata::DataValues::Time.new(
+      "time" => "+2024-01-15T00:00:00Z", "precision" => 11,
+      "calendarmodel" => "http://www.wikidata.org/entity/Q1985727"
+    )
+    refute val.julian?
   end
 end
 

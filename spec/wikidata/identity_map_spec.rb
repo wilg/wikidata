@@ -36,4 +36,27 @@ class IdentityMapTest < Minitest::Test
     Wikidata::IdentityMap.reset!
     assert_nil Wikidata::IdentityMap.cached_value("Q3")
   end
+
+  def test_ttl_expires_entries
+    original_ttl = Wikidata::Configuration.cache_ttl
+    Wikidata::Configuration.cache_ttl = 0.001 # 1ms
+
+    item = Wikidata::Item.new({"id" => "Q4", "labels" => {}})
+    Wikidata::IdentityMap.cache!("Q4", item)
+    sleep 0.01
+    assert_nil Wikidata::IdentityMap.cached_value("Q4")
+  ensure
+    Wikidata::Configuration.cache_ttl = original_ttl
+  end
+
+  def test_ttl_keeps_fresh_entries
+    original_ttl = Wikidata::Configuration.cache_ttl
+    Wikidata::Configuration.cache_ttl = 3600
+
+    item = Wikidata::Item.new({"id" => "Q5", "labels" => {}})
+    Wikidata::IdentityMap.cache!("Q5", item)
+    assert_equal "Q5", Wikidata::IdentityMap.cached_value("Q5").id
+  ensure
+    Wikidata::Configuration.cache_ttl = original_ttl
+  end
 end

@@ -127,6 +127,18 @@ class ItemTest < Minitest::Test
     assert_nil la_item.sitelink("nonexistent")
   end
 
+  def test_all_labels
+    labels = la_item.all_labels
+    assert_equal "Los Angeles", labels["en"]
+    assert_equal "Los Ángeles", labels["es"]
+  end
+
+  def test_all_descriptions
+    descs = la_item.all_descriptions
+    assert_equal "city in California, United States", descs["en"]
+    assert_equal "ciudad en California, Estados Unidos", descs["es"]
+  end
+
   def test_label_language
     assert_equal "en", la_item.label_language
   end

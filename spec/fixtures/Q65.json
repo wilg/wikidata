@@ -2,10 +2,12 @@
   "type": "item",
   "id": "Q65",
   "labels": {
-    "en": { "language": "en", "value": "Los Angeles" }
+    "en": { "language": "en", "value": "Los Angeles" },
+    "es": { "language": "es", "value": "Los Ángeles" }
   },
   "descriptions": {
-    "en": { "language": "en", "value": "city in California, United States" }
+    "en": { "language": "en", "value": "city in California, United States" },
+    "es": { "language": "es", "value": "ciudad en California, Estados Unidos" }
   },
   "aliases": {
     "en": [

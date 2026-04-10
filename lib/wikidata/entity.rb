@@ -153,6 +153,20 @@ module Wikidata
       delocalize data_hash.descriptions, *args
     end
 
+    def all_labels
+      return {} unless data_hash.labels
+      data_hash.labels.each_with_object({}) do |(locale, entry), hash|
+        hash[locale] = entry.value
+      end
+    end
+
+    def all_descriptions
+      return {} unless data_hash.descriptions
+      data_hash.descriptions.each_with_object({}) do |(locale, entry), hash|
+        hash[locale] = entry.value
+      end
+    end
+
     def aliases(locale = I18n.default_locale)
       entries = data_hash.aliases&.dig(locale.to_s)
       return [] unless entries

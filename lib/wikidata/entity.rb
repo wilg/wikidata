@@ -66,7 +66,13 @@ module Wikidata
       response.body["entities"].map do |entity_id, entity_hash|
         if entity_id.to_i != -1
           item = Wikidata::Item.new(entity_hash)
+          # Cache under the requested ID
           IdentityMap.cache!(entity_id, item)
+          # Also cache under the real ID if this was a redirect
+          real_id = entity_hash["id"] || entity_hash[:id]
+          if real_id && real_id.to_s != entity_id.to_s
+            IdentityMap.cache!(real_id.to_s, item)
+          end
           item
         end
       end.compact

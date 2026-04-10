@@ -121,6 +121,23 @@ class EntityTest < Minitest::Test
     Wikidata::Configuration.property_presets = original_presets
   end
 
+  def test_redirected_entity_cached_under_both_ids
+    # Simulate a redirect: request Q999 but the entity's real id is Q65
+    redirected_entity = load_fixture("Q65.json")
+    response = {"entities" => {"Q999" => redirected_entity}}
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("ids" => "Q999"))
+      .to_return(status: 200, body: JSON.generate(response), headers: {"Content-Type" => "application/json"})
+
+    items = Wikidata::Item.find_all_by_id("Q999")
+    assert_equal 1, items.length
+    assert_equal "Q65", items.first.id
+
+    # Both IDs should resolve from cache
+    assert_equal "Q65", Wikidata::IdentityMap.cached_value("Q999").id
+    assert_equal "Q65", Wikidata::IdentityMap.cached_value("Q65").id
+  end
+
   def test_raises_rate_limit_error_on_429
     stub_request(:get, /wikidata\.org\/w\/api\.php/)
       .with(query: hash_including("ids" => "Q42"))

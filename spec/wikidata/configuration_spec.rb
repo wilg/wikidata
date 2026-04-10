@@ -55,6 +55,19 @@ class ConfigurationTest < Minitest::Test
     Wikidata::Configuration.maxlag = original
   end
 
+  def test_custom_api_url
+    original = Wikidata::Configuration.api_url
+    Wikidata::Configuration.api_url = "https://test.wikidata.org/w/api.php"
+    client = Wikidata::Entity.client
+    assert_equal "https://test.wikidata.org/w/api.php", client.url_prefix.to_s
+  ensure
+    Wikidata::Configuration.api_url = original
+  end
+
+  def test_default_api_url
+    assert_equal "https://www.wikidata.org/w/api.php", Wikidata::Entity.client.url_prefix.to_s
+  end
+
   def test_default_logger
     assert_instance_of Logger, Wikidata::Configuration.logger
   end

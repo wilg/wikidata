@@ -2,7 +2,7 @@
 
 module Wikidata
   class Entity < Wikidata::HashedObject
-    BASE_URL = "https://www.wikidata.org/w/api.php"
+    DEFAULT_API_URL = "https://www.wikidata.org/w/api.php"
 
     def self.find_all(query)
       found_objects = []
@@ -209,7 +209,7 @@ module Wikidata
     end
 
     def self.client
-      Faraday.new({url: BASE_URL}.merge(Wikidata.client_options)) do |faraday|
+      Faraday.new({url: Configuration.api_url || DEFAULT_API_URL}.merge(Wikidata.client_options)) do |faraday|
         faraday.headers["User-Agent"] = Configuration.user_agent || default_user_agent
         faraday.request :url_encoded
         faraday.response :json, content_type: /\bjson$/

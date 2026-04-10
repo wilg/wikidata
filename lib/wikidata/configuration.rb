@@ -6,7 +6,7 @@ module Wikidata
   class Configuration
     class << self
       attr_accessor :verbose, :use_only_default_language, :client_options, :property_presets, :faraday_adapter,
-        :cache_store, :cache_ttl, :logger, :user_agent, :maxlag, :max_retries
+        :cache_store, :cache_ttl, :logger, :user_agent, :maxlag, :max_retries, :api_url
 
       def configure(&block)
         yield self

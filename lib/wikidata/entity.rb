@@ -191,6 +191,7 @@ module Wikidata
     def self.client
       Faraday.new({url: BASE_URL}.merge(Wikidata.client_options)) do |faraday|
         faraday.headers["User-Agent"] = Configuration.user_agent || default_user_agent
+        faraday.headers["Accept-Encoding"] = "gzip"
         faraday.request :url_encoded
         faraday.response :json, content_type: /\bjson$/
         faraday.adapter Wikidata::Configuration.faraday_adapter

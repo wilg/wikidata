@@ -55,6 +55,36 @@ class DataValuesYearTest < Minitest::Test
     val = Wikidata::DataValues::Year.new("time" => "+1800-00-00T00:00:00Z", "precision" => 7)
     assert_equal 7, val.precision
   end
+
+  def test_century_precision_to_s
+    val = Wikidata::DataValues::Year.new("time" => "+1800-00-00T00:00:00Z", "precision" => 7)
+    assert_equal "18th century", val.to_s
+  end
+
+  def test_decade_precision_to_s
+    val = Wikidata::DataValues::Year.new("time" => "+1950-00-00T00:00:00Z", "precision" => 8)
+    assert_equal "1950s", val.to_s
+  end
+
+  def test_millennium_precision_to_s
+    val = Wikidata::DataValues::Year.new("time" => "+1500-00-00T00:00:00Z", "precision" => 6)
+    assert_equal "2nd millennium", val.to_s
+  end
+
+  def test_month_precision_to_s
+    val = Wikidata::DataValues::Year.new("time" => "+2020-03-00T00:00:00Z", "precision" => 10)
+    assert_equal "March 2020", val.to_s
+  end
+
+  def test_month_accessor
+    val = Wikidata::DataValues::Year.new("time" => "+2020-03-00T00:00:00Z", "precision" => 10)
+    assert_equal 3, val.month
+  end
+
+  def test_bce_century_to_s
+    val = Wikidata::DataValues::Year.new("time" => "-0500-00-00T00:00:00Z", "precision" => 7)
+    assert_equal "5th century BCE", val.to_s
+  end
 end
 
 class DataValuesGlobecoordinateTest < Minitest::Test

@@ -63,5 +63,13 @@ module Wikidata
     def client_options
       Configuration.client_options
     end
+
+    def logger
+      Configuration.logger
+    end
+
+    def logger=(logger)
+      Configuration.logger = logger
+    end
   end
 end

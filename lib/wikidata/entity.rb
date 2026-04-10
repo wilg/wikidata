@@ -149,7 +149,9 @@ module Wikidata
 
     def self.get(*args)
       res = client.get(*args)
-      puts "[Wikidata] #{res.env.url}" if Wikidata.verbose?
+      if Wikidata.verbose?
+        Configuration.logger.debug { "[Wikidata] #{res.env.url}" }
+      end
       res
     end
 

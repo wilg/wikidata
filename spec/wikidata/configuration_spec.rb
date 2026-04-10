@@ -34,4 +34,36 @@ class ConfigurationTest < Minitest::Test
     hash = Wikidata.default_languages_hash
     assert hash.key?(:languages)
   end
+
+  def test_default_logger
+    assert_instance_of Logger, Wikidata::Configuration.logger
+  end
+
+  def test_custom_logger
+    custom = Logger.new(StringIO.new)
+    original = Wikidata::Configuration.logger
+    Wikidata.logger = custom
+    assert_equal custom, Wikidata.logger
+  ensure
+    Wikidata.logger = original
+  end
+
+  def test_verbose_logs_to_logger
+    output = StringIO.new
+    custom = Logger.new(output, level: Logger::DEBUG)
+    original_logger = Wikidata::Configuration.logger
+    original_verbose = Wikidata::Configuration.verbose
+    Wikidata.logger = custom
+    Wikidata::Configuration.verbose = true
+
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("ids" => "Q1"))
+      .to_return(status: 200, body: '{"entities":{"Q1":{"id":"Q1"}}}', headers: {"Content-Type" => "application/json"})
+
+    Wikidata::Item.find_all_by_id("Q1")
+    assert_includes output.string, "[Wikidata]"
+  ensure
+    Wikidata.logger = original_logger
+    Wikidata::Configuration.verbose = original_verbose
+  end
 end

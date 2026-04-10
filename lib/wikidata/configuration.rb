@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require "logger"
+
 module Wikidata
   class Configuration
     class << self
       attr_accessor :verbose, :use_only_default_language, :client_options, :property_presets, :faraday_adapter,
-        :cache_store, :cache_ttl
+        :cache_store, :cache_ttl, :logger
 
       def configure(&block)
         yield self
@@ -25,6 +27,7 @@ module Wikidata
     @faraday_adapter = :net_http
     @cache_store = nil
     @cache_ttl = 3600
+    @logger = Logger.new($stdout, level: Logger::WARN)
     @property_presets = {
       mother: "P25",
       father: "P22",

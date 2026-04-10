@@ -123,6 +123,14 @@ module Wikidata
       end
     end
 
+    def redirected?
+      data_hash.redirects.is_a?(Hash) || data_hash.redirects.respond_to?(:from)
+    end
+
+    def redirected_from
+      data_hash.redirects&.from
+    end
+
     def inspect
       "<#{self.class} id=#{id} label=#{label.inspect}>"
     end

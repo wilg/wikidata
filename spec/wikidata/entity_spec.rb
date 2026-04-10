@@ -189,6 +189,21 @@ class EntityTest < Minitest::Test
     assert_equal 2, call_count
   end
 
+  def test_redirected_entity
+    entity_hash = load_fixture("Q65.json").merge(
+      "redirects" => {"from" => "Q999", "to" => "Q65"}
+    )
+    item = Wikidata::Item.new(entity_hash)
+    assert item.redirected?
+    assert_equal "Q999", item.redirected_from
+  end
+
+  def test_non_redirected_entity
+    item = Wikidata::Item.new(load_fixture("Q65.json"))
+    refute item.redirected?
+    assert_nil item.redirected_from
+  end
+
   def test_client_is_faraday_connection
     client = Wikidata::Entity.client
     assert_instance_of Faraday::Connection, client

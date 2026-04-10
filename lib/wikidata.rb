@@ -1,5 +1,4 @@
 require "faraday"
-require "faraday_middleware"
 require "hashie"
 require "i18n"
 require "wikidata/version"

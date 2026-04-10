@@ -17,8 +17,7 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "faraday"
-  spec.add_dependency "faraday_middleware"
+  spec.add_dependency "faraday", "~> 2.0"
   spec.add_dependency "colorize"
   spec.add_dependency "terminal-table"
   spec.add_dependency "activesupport"

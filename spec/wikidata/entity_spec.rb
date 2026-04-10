@@ -67,4 +67,9 @@ class EntityTest < Minitest::Test
     results = Wikidata::Item.find_all_by_id("Q00")
     assert_equal [], results
   end
+
+  def test_client_is_faraday_connection
+    client = Wikidata::Entity.client
+    assert_instance_of Faraday::Connection, client
+  end
 end

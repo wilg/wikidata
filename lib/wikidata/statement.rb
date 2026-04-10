@@ -24,6 +24,22 @@ module Wikidata
       qualifiers.select { |s| s.property_id == property_id }
     end
 
+    def start_time
+      qualifiers_for("P580").first&.value
+    end
+
+    def end_time
+      qualifiers_for("P582").first&.value
+    end
+
+    def point_in_time
+      qualifiers_for("P585").first&.value
+    end
+
+    def current?
+      end_time.nil?
+    end
+
     def references
       @references ||= if data_hash.references
         data_hash.references.map do |ref_hash|

@@ -53,4 +53,31 @@ class StatementTest < Minitest::Test
     url_claim = item.claims_for_property_id("P856").first
     assert_equal [], url_claim.references
   end
+
+  def test_start_time
+    preferred_leader = item.ranked_claims_for_property_id("P6").first
+    assert_instance_of Wikidata::DataValues::Time, preferred_leader.start_time
+    assert_equal 2022, preferred_leader.start_time.to_time.year
+  end
+
+  def test_end_time
+    # The normal-rank former mayor has an end_time
+    all_leaders = item.claims_for_property_id("P6")
+    former = all_leaders.find { |c| c.rank == "normal" }
+    assert_instance_of Wikidata::DataValues::Time, former.end_time
+    assert_equal 2022, former.end_time.to_time.year
+  end
+
+  def test_current
+    preferred_leader = item.ranked_claims_for_property_id("P6").first
+    assert preferred_leader.current?
+
+    all_leaders = item.claims_for_property_id("P6")
+    former = all_leaders.find { |c| c.rank == "normal" }
+    refute former.current?
+  end
+
+  def test_point_in_time_nil_when_absent
+    assert_nil inception_claim.point_in_time
+  end
 end

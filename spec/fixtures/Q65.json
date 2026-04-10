@@ -7,6 +7,16 @@
   "descriptions": {
     "en": { "language": "en", "value": "city in California, United States" }
   },
+  "aliases": {
+    "en": [
+      { "language": "en", "value": "LA" },
+      { "language": "en", "value": "City of Los Angeles" }
+    ]
+  },
+  "sitelinks": {
+    "enwiki": { "site": "enwiki", "title": "Los Angeles", "badges": [] },
+    "dewiki": { "site": "dewiki", "title": "Los Angeles", "badges": [] }
+  },
   "claims": {
     "P31": [
       {

@@ -127,6 +127,20 @@ module Wikidata
       delocalize data_hash.descriptions, *args
     end
 
+    def aliases(locale = I18n.default_locale)
+      entries = data_hash.aliases&.dig(locale.to_s)
+      return [] unless entries
+      entries.map { |a| a["value"] || a.value }
+    end
+
+    def sitelinks
+      data_hash.sitelinks
+    end
+
+    def sitelink(site = "enwiki")
+      data_hash.sitelinks&.dig(site)
+    end
+
     def self.get(*args)
       res = client.get(*args)
       puts "[Wikidata] #{res.env.url}" if Wikidata.verbose?

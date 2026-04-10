@@ -104,6 +104,29 @@ class ItemTest < Minitest::Test
     assert_equal ["https://www.lacity.org/"], sites
   end
 
+  def test_aliases
+    assert_equal ["LA", "City of Los Angeles"], la_item.aliases
+  end
+
+  def test_aliases_empty_for_missing_locale
+    assert_equal [], la_item.aliases(:fr)
+  end
+
+  def test_sitelinks
+    refute_nil la_item.sitelinks
+    assert_equal "Los Angeles", la_item.sitelinks.enwiki.title
+  end
+
+  def test_sitelink
+    link = la_item.sitelink("enwiki")
+    assert_equal "Los Angeles", link.title
+    assert_equal "enwiki", link.site
+  end
+
+  def test_sitelink_missing
+    assert_nil la_item.sitelink("nonexistent")
+  end
+
   def test_inspect
     assert_includes la_item.inspect, "Q65"
     assert_includes la_item.inspect, "Los Angeles"

@@ -2,6 +2,16 @@
 
 module Wikidata
   class Item < Wikidata::Entity
+    def self.find_by_property_value(property_id, value)
+      find_all_by_property_value(property_id, value).first
+    end
+
+    def self.find_all_by_property_value(property_id, value)
+      presets = Wikidata::Configuration.property_presets
+      property_id = presets[property_id.to_sym] if presets.include?(property_id.to_sym)
+      search("haswbstatement:#{property_id}=#{value}")
+    end
+
     def claims
       @claims ||= if data_hash.claims
         data_hash.claims.map do |statement_type, statement_array|

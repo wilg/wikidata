@@ -138,13 +138,62 @@ class SnakTest < Minitest::Test
     assert_nil snak.value
   end
 
-  def test_unhandled_datavalue_type_returns_raw
-    snak = make_snak("snaktype" => "value", "property" => "P999", "datavalue" => {
+  def test_quantity_value
+    snak = make_snak("snaktype" => "value", "property" => "P1082", "datavalue" => {
+      "value" => {"amount" => "+3976322", "unit" => "http://www.wikidata.org/entity/Q11573"},
+      "type" => "quantity"
+    })
+    assert_instance_of Wikidata::DataValues::Quantity, snak.value
+    assert_equal 3_976_322.0, snak.value.amount
+    assert_equal "Q11573", snak.value.unit_item_id
+    assert_equal "3976322.0", snak.value.to_s
+  end
+
+  def test_quantity_value_dimensionless
+    snak = make_snak("snaktype" => "value", "property" => "P1082", "datavalue" => {
       "value" => {"amount" => "+1000", "unit" => "1"},
       "type" => "quantity"
     })
-    # Unhandled types fall through to raw datavalue
-    refute_nil snak.value
+    assert_instance_of Wikidata::DataValues::Quantity, snak.value
+    assert_equal 1000.0, snak.value.amount
+    assert_equal "1", snak.value.unit_item_id
+  end
+
+  def test_monolingualtext_value
+    snak = make_snak("snaktype" => "value", "property" => "P1559", "datavalue" => {
+      "value" => {"text" => "Los Angeles", "language" => "en"},
+      "type" => "monolingualtext"
+    })
+    assert_instance_of Wikidata::DataValues::MonolingualText, snak.value
+    assert_equal "Los Angeles", snak.value.text
+    assert_equal "en", snak.value.language
+    assert_equal "Los Angeles", snak.value.to_s
+  end
+
+  def test_time_value_month_precision
+    snak = make_snak("snaktype" => "value", "property" => "P585", "datavalue" => {
+      "value" => {
+        "time" => "+2020-03-00T00:00:00Z", "timezone" => 0,
+        "before" => 0, "after" => 0, "precision" => 10,
+        "calendarmodel" => "http://www.wikidata.org/entity/Q1985727"
+      },
+      "type" => "time"
+    })
+    assert_instance_of Wikidata::DataValues::Year, snak.value
+    assert_equal 2020, snak.value.to_i
+  end
+
+  def test_time_value_century_precision
+    snak = make_snak("snaktype" => "value", "property" => "P585", "datavalue" => {
+      "value" => {
+        "time" => "+1800-00-00T00:00:00Z", "timezone" => 0,
+        "before" => 0, "after" => 0, "precision" => 7,
+        "calendarmodel" => "http://www.wikidata.org/entity/Q1985727"
+      },
+      "type" => "time"
+    })
+    assert_instance_of Wikidata::DataValues::Year, snak.value
+    assert_equal 1800, snak.value.to_i
   end
 
   def test_inspect

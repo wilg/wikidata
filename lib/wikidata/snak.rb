@@ -34,11 +34,13 @@ module Wikidata
       elsif datavalue["type"] == "time"
         if datavalue.value.precision >= 11
           Wikidata::DataValues::Time.new(datavalue.value)
-        elsif datavalue.value.precision == 9
-          Wikidata::DataValues::Year.new(datavalue.value)
         else
-          datavalue
+          Wikidata::DataValues::Year.new(datavalue.value)
         end
+      elsif datavalue["type"] == "quantity"
+        Wikidata::DataValues::Quantity.new(datavalue.value)
+      elsif datavalue["type"] == "monolingualtext"
+        Wikidata::DataValues::MonolingualText.new(datavalue.value)
       elsif datavalue["type"] == "globecoordinate"
         Wikidata::DataValues::Globecoordinate.new(datavalue.value)
       elsif datavalue["type"] == "string"

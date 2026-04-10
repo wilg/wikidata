@@ -83,8 +83,8 @@ module Wikidata
 
     def display_item(item)
       if item
-        puts item.label.green.to_s if item.label
-        puts item.description.cyan.to_s if item.description
+        puts item.label.green if item.label
+        puts item.description.cyan if item.description
         puts "Wikidata ID: #{item.id}"
         puts "Claims: #{item.claims.length}" if item.claims
         if item.claims.length > 0

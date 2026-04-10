@@ -6,7 +6,8 @@ module Wikidata
   class Configuration
     class << self
       attr_accessor :verbose, :use_only_default_language, :client_options, :property_presets, :faraday_adapter,
-        :cache_store, :cache_ttl, :logger, :user_agent, :maxlag, :max_retries, :api_url, :sparql_endpoint
+        :cache_store, :cache_ttl, :logger, :user_agent, :maxlag, :max_retries, :api_url, :sparql_endpoint,
+        :default_props, :sitefilter
 
       def configure(&block)
         yield self

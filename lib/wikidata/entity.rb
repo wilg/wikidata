@@ -7,12 +7,15 @@ module Wikidata
     def self.find_all(query)
       found_objects = []
 
-      query = {
+      defaults = {
         action: "wbgetentities",
         sites: "enwiki",
         format: "json",
         languagefallback: ""
-      }.merge(default_query_params).merge(Wikidata.default_languages_hash).merge(query)
+      }
+      defaults[:props] = Configuration.default_props if Configuration.default_props
+      defaults[:sitefilter] = Configuration.sitefilter if Configuration.sitefilter
+      query = defaults.merge(default_query_params).merge(Wikidata.default_languages_hash).merge(query)
 
       query[:languages] = query[:languages].join("|") if query[:languages].is_a? Array
 
@@ -78,20 +81,26 @@ module Wikidata
       end.compact
     end
 
-    def self.find_all_by_id(id, query = {})
-      find_all({ids: id}.merge(query))
+    def self.find_all_by_id(id, props: nil, sitefilter: nil, **query)
+      q = {ids: id}.merge(query)
+      q[:props] = props if props
+      q[:sitefilter] = sitefilter if sitefilter
+      find_all(q)
     end
 
-    def self.find_by_id(*args)
-      find_all_by_id(*args).first
+    def self.find_by_id(id, **args)
+      find_all_by_id(id, **args).first
     end
 
-    def self.find_all_by_title(title, query = {})
-      find_all({titles: title}.merge(query))
+    def self.find_all_by_title(title, props: nil, sitefilter: nil, **query)
+      q = {titles: title}.merge(query)
+      q[:props] = props if props
+      q[:sitefilter] = sitefilter if sitefilter
+      find_all(q)
     end
 
-    def self.find_by_title(*args)
-      find_all_by_title(*args).first
+    def self.find_by_title(title, **args)
+      find_all_by_title(title, **args).first
     end
 
     # Search for resources on wikidata api.
@@ -117,7 +126,7 @@ module Wikidata
       end
       items = response.body["query"]["search"]
       if items && !items.empty?
-        Wikidata::Item.find_all_by_id items.map { |i| i["title"] }, options
+        Wikidata::Item.find_all_by_id items.map { |i| i["title"] }, **options
       else
         []
       end

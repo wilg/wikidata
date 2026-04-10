@@ -137,6 +137,49 @@ class EntityTest < Minitest::Test
     Wikidata::Configuration.property_presets = original_presets
   end
 
+  def test_find_by_id_with_props
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("ids" => "Q42", "props" => "labels"))
+      .to_return(status: 200, body: JSON.generate({"entities" => {"Q42" => {"id" => "Q42", "labels" => {"en" => {"value" => "Douglas Adams"}}}}}), headers: {"Content-Type" => "application/json"})
+
+    item = Wikidata::Item.find_by_id("Q42", props: "labels")
+    assert_equal "Douglas Adams", item.label
+  end
+
+  def test_find_by_id_with_sitefilter
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("ids" => "Q42", "sitefilter" => "enwiki"))
+      .to_return(status: 200, body: JSON.generate({"entities" => {"Q42" => {"id" => "Q42"}}}), headers: {"Content-Type" => "application/json"})
+
+    Wikidata::Item.find_by_id("Q42", sitefilter: "enwiki")
+  end
+
+  def test_global_default_props
+    original = Wikidata::Configuration.default_props
+    Wikidata::Configuration.default_props = "labels|descriptions"
+
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("props" => "labels|descriptions"))
+      .to_return(status: 200, body: JSON.generate({"entities" => {"Q42" => {"id" => "Q42"}}}), headers: {"Content-Type" => "application/json"})
+
+    Wikidata::Item.find_by_id("Q42")
+  ensure
+    Wikidata::Configuration.default_props = original
+  end
+
+  def test_per_request_props_overrides_global
+    original = Wikidata::Configuration.default_props
+    Wikidata::Configuration.default_props = "labels"
+
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("props" => "claims"))
+      .to_return(status: 200, body: JSON.generate({"entities" => {"Q42" => {"id" => "Q42"}}}), headers: {"Content-Type" => "application/json"})
+
+    Wikidata::Item.find_by_id("Q42", props: "claims")
+  ensure
+    Wikidata::Configuration.default_props = original
+  end
+
   def test_redirected_entity_cached_under_both_ids
     # Simulate a redirect: request Q999 but the entity's real id is Q65
     redirected_entity = load_fixture("Q65.json")

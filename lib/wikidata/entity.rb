@@ -155,8 +155,13 @@ module Wikidata
       res
     end
 
+    def self.default_user_agent
+      "wikidata-ruby/#{Wikidata::VERSION} (https://github.com/wilg/wikidata)"
+    end
+
     def self.client
       Faraday.new({url: BASE_URL}.merge(Wikidata.client_options)) do |faraday|
+        faraday.headers["User-Agent"] = Configuration.user_agent || default_user_agent
         faraday.request :url_encoded
         faraday.response :json, content_type: /\bjson$/
         faraday.adapter Wikidata::Configuration.faraday_adapter

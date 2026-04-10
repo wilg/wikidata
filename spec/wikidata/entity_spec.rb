@@ -125,4 +125,18 @@ class EntityTest < Minitest::Test
     client = Wikidata::Entity.client
     assert_instance_of Faraday::Connection, client
   end
+
+  def test_client_sends_user_agent
+    client = Wikidata::Entity.client
+    assert_includes client.headers["User-Agent"], "wikidata-ruby/"
+  end
+
+  def test_custom_user_agent
+    original = Wikidata::Configuration.user_agent
+    Wikidata::Configuration.user_agent = "MyApp/1.0"
+    client = Wikidata::Entity.client
+    assert_equal "MyApp/1.0", client.headers["User-Agent"]
+  ensure
+    Wikidata::Configuration.user_agent = original
+  end
 end

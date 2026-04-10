@@ -21,6 +21,7 @@ require "wikidata/datavalues/entity"
 require "wikidata/datavalues/year"
 require "wikidata/datavalues/some_value"
 require "wikidata/datavalues/no_value"
+require "wikidata/sparql"
 require "wikidata/datavalues/quantity"
 require "wikidata/datavalues/monolingual_text"
 

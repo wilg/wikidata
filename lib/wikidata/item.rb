@@ -43,15 +43,18 @@ module Wikidata
       claims.select { |c| c.mainsnak.property_id == property_id }
     end
 
-    # Returns claims for a property sorted by rank: preferred first, deprecated excluded.
+    # Returns "truthy" claims for a property — the Wikidata best-rank algorithm.
     # If any preferred-rank claims exist, only those are returned.
-    # Otherwise, normal-rank claims are returned (deprecated are always excluded).
-    def ranked_claims_for_property_id(property_id)
+    # Otherwise, normal-rank claims are returned. Deprecated claims are always excluded.
+    # This matches the behavior of SPARQL's wdt: prefix.
+    def truthy_claims_for(property_id)
       all = claims_for_property_id(property_id)
       preferred = all.select { |c| c.data_hash["rank"] == "preferred" }
       return preferred if preferred.any?
       all.reject { |c| c.data_hash["rank"] == "deprecated" }
     end
+
+    alias_method :ranked_claims_for_property_id, :truthy_claims_for
 
     def best_value_for(property_id)
       ranked_claims_for_property_id(property_id).first&.mainsnak&.value

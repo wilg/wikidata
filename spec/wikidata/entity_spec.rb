@@ -68,6 +68,45 @@ class EntityTest < Minitest::Test
     assert_equal [], results
   end
 
+  def test_find_by_property_value
+    stub_wikidata_search("haswbstatement:P646=/m/0181lj", ["Q65"])
+    stub_wikidata_entity("Q65", load_fixture("Q65.json"))
+
+    item = Wikidata::Item.find_by_property_value("P646", "/m/0181lj")
+    assert_instance_of Wikidata::Item, item
+    assert_equal "Q65", item.id
+  end
+
+  def test_find_all_by_property_value
+    stub_wikidata_search("haswbstatement:P345=tt0111161", ["Q65"])
+    stub_wikidata_entity("Q65", load_fixture("Q65.json"))
+
+    results = Wikidata::Item.find_all_by_property_value("P345", "tt0111161")
+    assert_instance_of Array, results
+    assert_equal 1, results.length
+  end
+
+  def test_find_by_property_value_returns_nil_when_not_found
+    stub_wikidata_search("haswbstatement:P646=/m/nonexistent", [])
+
+    result = Wikidata::Item.find_by_property_value("P646", "/m/nonexistent")
+    assert_nil result
+  end
+
+  def test_find_by_property_value_resolves_preset
+    original_presets = Wikidata::Configuration.property_presets.dup
+    Wikidata::Configuration.property_presets[:freebase_id] = "P646"
+
+    stub_wikidata_search("haswbstatement:P646=/m/0181lj", ["Q65"])
+    stub_wikidata_entity("Q65", load_fixture("Q65.json"))
+
+    item = Wikidata::Item.find_by_property_value(:freebase_id, "/m/0181lj")
+    assert_instance_of Wikidata::Item, item
+    assert_equal "Q65", item.id
+  ensure
+    Wikidata::Configuration.property_presets = original_presets
+  end
+
   def test_client_is_faraday_connection
     client = Wikidata::Entity.client
     assert_instance_of Faraday::Connection, client

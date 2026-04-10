@@ -59,13 +59,27 @@ class EntityTest < Minitest::Test
     end
   end
 
-  def test_handles_http_error
+  def test_raises_http_error_on_server_failure
     stub_request(:get, /wikidata\.org\/w\/api\.php/)
       .with(query: hash_including("ids" => "Q00"))
       .to_return(status: 500)
 
-    results = Wikidata::Item.find_all_by_id("Q00")
-    assert_equal [], results
+    err = assert_raises(Wikidata::HttpError) do
+      Wikidata::Item.find_all_by_id("Q00")
+    end
+    assert_equal 500, err.status
+    assert_includes err.message, "HTTP 500"
+  end
+
+  def test_raises_http_error_on_search_failure
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("action" => "query", "srsearch" => "test"))
+      .to_return(status: 503)
+
+    err = assert_raises(Wikidata::HttpError) do
+      Wikidata::Item.search("test")
+    end
+    assert_equal 503, err.status
   end
 
   def test_find_by_property_value

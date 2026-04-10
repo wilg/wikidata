@@ -59,7 +59,9 @@ module Wikidata
 
     def self.query_and_build_objects(query)
       response = get "", query
-      return [] unless response.status == 200
+      unless response.status == 200
+        raise Wikidata::HttpError.new(response.status, response.env.url.to_s)
+      end
       response.body["entities"].map do |entity_id, entity_hash|
         if entity_id.to_i != -1
           item = Wikidata::Item.new(entity_hash)
@@ -102,7 +104,11 @@ module Wikidata
       options = args[:options] || {}
 
       response = get "", query
-      if response.status == 200 && (items = response.body["query"]["search"]) && !items.empty?
+      unless response.status == 200
+        raise Wikidata::HttpError.new(response.status, response.env.url.to_s)
+      end
+      items = response.body["query"]["search"]
+      if items && !items.empty?
         Wikidata::Item.find_all_by_id items.map { |i| i["title"] }, options
       else
         []

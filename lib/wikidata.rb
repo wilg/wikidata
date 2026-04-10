@@ -27,6 +27,18 @@ require "wikidata/datavalues/monolingual_text"
 module Wikidata
   class Error < StandardError; end
 
+  class HttpError < Error
+    attr_reader :status, :url
+
+    def initialize(status, url)
+      @status = status
+      @url = url
+      super("Wikidata API returned HTTP #{status}: #{url}")
+    end
+  end
+
+  class NotFoundError < Error; end
+
   class << self
     def configure(&block)
       Configuration.configure(&block)

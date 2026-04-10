@@ -4,7 +4,7 @@ module Wikidata
   class IdentityMap < Wikidata::HashedObject
     CACHE_PREFIX = "wikidata:entity:"
 
-    CacheEntry = Struct.new(:value, :expires_at)
+    CacheEntry = Struct.new(:value, :expires_at, :etag)
 
     @mutex = Mutex.new
     @identity_map = {}
@@ -35,13 +35,37 @@ module Wikidata
       end
     end
 
-    def self.cache!(key, value)
+    def self.cache!(key, value, etag: nil)
       if (store = Configuration.cache_store)
-        store.write("#{CACHE_PREFIX}#{key}", value.data_hash.to_h, expires_in: Configuration.cache_ttl)
+        data = value.data_hash.to_h
+        data["_etag"] = etag if etag
+        store.write("#{CACHE_PREFIX}#{key}", data, expires_in: Configuration.cache_ttl)
       else
         ttl = Configuration.cache_ttl
         expires_at = ttl ? Time.now + ttl : nil
-        @mutex.synchronize { @identity_map[key] = CacheEntry.new(value, expires_at) }
+        @mutex.synchronize { @identity_map[key] = CacheEntry.new(value, expires_at, etag) }
+      end
+    end
+
+    def self.etag_for(key)
+      if (store = Configuration.cache_store)
+        raw = store.read("#{CACHE_PREFIX}#{key}")
+        raw&.dig("_etag")
+      else
+        @mutex.synchronize { @identity_map[key]&.etag }
+      end
+    end
+
+    def self.refresh_ttl!(key)
+      if (store = Configuration.cache_store)
+        raw = store.read("#{CACHE_PREFIX}#{key}")
+        store.write("#{CACHE_PREFIX}#{key}", raw, expires_in: Configuration.cache_ttl) if raw
+      else
+        ttl = Configuration.cache_ttl
+        @mutex.synchronize do
+          entry = @identity_map[key]
+          entry.expires_at = ttl ? Time.now + ttl : nil if entry
+        end
       end
     end
 

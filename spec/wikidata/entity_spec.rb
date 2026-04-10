@@ -3,6 +3,18 @@ require "spec_helper"
 class EntityTest < Minitest::Test
   include TestHelpers
 
+  def setup
+    super
+    # VCR cassettes only have Action API requests, disable REST for these tests
+    @original_use_rest = Wikidata::Configuration.use_rest_api
+    Wikidata::Configuration.use_rest_api = false
+  end
+
+  def teardown
+    Wikidata::Configuration.use_rest_api = @original_use_rest
+    super
+  end
+
   def test_find_by_id
     VCR.use_cassette("find_by_id_Q65") do
       item = Wikidata::Item.find_by_id("Q65")

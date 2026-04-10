@@ -7,7 +7,7 @@ module Wikidata
     class << self
       attr_accessor :verbose, :use_only_default_language, :client_options, :property_presets, :faraday_adapter,
         :cache_store, :cache_ttl, :logger, :user_agent, :maxlag, :max_retries, :api_url, :sparql_endpoint,
-        :default_props, :sitefilter
+        :default_props, :sitefilter, :rest_api_url, :use_rest_api
 
       def configure(&block)
         yield self
@@ -30,6 +30,7 @@ module Wikidata
     @cache_ttl = 3600
     @logger = Logger.new($stdout, level: Logger::WARN)
     @max_retries = 3
+    @use_rest_api = true
     @property_presets = {
       mother: "P25",
       father: "P22",

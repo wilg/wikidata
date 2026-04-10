@@ -63,8 +63,17 @@ class DataValuesYearTest < Minitest::Test
   def test_bce_year
     val = Wikidata::DataValues::Year.new("time" => "-0500-00-00T00:00:00Z", "precision" => 9)
     assert_equal(-500, val.to_i)
+    assert_equal 501, val.historical_year
     assert val.bce?
-    assert_equal "500 BCE", val.to_s
+    assert_equal "501 BCE", val.to_s
+  end
+
+  def test_year_zero_is_1_bce
+    val = Wikidata::DataValues::Year.new("time" => "+0000-00-00T00:00:00Z", "precision" => 9)
+    assert_equal 0, val.to_i
+    assert_equal 1, val.historical_year
+    assert val.bce?
+    assert_equal "1 BCE", val.to_s
   end
 
   def test_bce_predicate_false_for_ce
@@ -103,8 +112,9 @@ class DataValuesYearTest < Minitest::Test
   end
 
   def test_bce_century_to_s
+    # -0500 = astronomical year -500 = 501 BCE = 6th century BCE
     val = Wikidata::DataValues::Year.new("time" => "-0500-00-00T00:00:00Z", "precision" => 7)
-    assert_equal "5th century BCE", val.to_s
+    assert_equal "6th century BCE", val.to_s
   end
 end
 

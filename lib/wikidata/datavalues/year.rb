@@ -14,7 +14,14 @@ module Wikidata
       end
 
       def bce?
-        to_i < 0
+        to_i <= 0
+      end
+
+      # Wikidata uses astronomical year numbering where year 0 = 1 BCE,
+      # year -1 = 2 BCE, etc. This returns the conventional BCE/CE year.
+      def historical_year
+        y = to_i
+        (y <= 0) ? (1 - y) : y
       end
 
       def precision
@@ -29,28 +36,27 @@ module Wikidata
       end
 
       def to_s
-        year = to_i
-        abs_year = year.abs
-        suffix = (year < 0) ? " BCE" : ""
+        hy = historical_year
+        suffix = bce? ? " BCE" : ""
 
         case precision
         when 6 # millennium
-          m = ((abs_year - 1) / 1000) + 1
+          m = ((hy - 1) / 1000) + 1
           "#{ordinalize(m)} millennium#{suffix}"
         when 7 # century
-          c = ((abs_year - 1) / 100) + 1
+          c = ((hy - 1) / 100) + 1
           "#{ordinalize(c)} century#{suffix}"
         when 8 # decade
-          "#{(abs_year / 10) * 10}s#{suffix}"
+          "#{(hy / 10) * 10}s#{suffix}"
         when 10 # month
           if month && month > 0
             date = Date.new(2000, month, 1)
-            "#{date.strftime("%B")} #{abs_year}#{suffix}"
+            "#{date.strftime("%B")} #{hy}#{suffix}"
           else
-            "#{abs_year}#{suffix}"
+            "#{hy}#{suffix}"
           end
         else
-          "#{abs_year}#{suffix}"
+          "#{hy}#{suffix}"
         end
       end
 

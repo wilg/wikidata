@@ -198,6 +198,10 @@ module Wikidata
       data_hash.sitelinks&.dig(site)
     end
 
+    def sitelink_badges(site = "enwiki")
+      sitelink(site)&.badges || []
+    end
+
     def self.default_query_params
       params = {}
       params[:maxlag] = Configuration.maxlag if Configuration.maxlag

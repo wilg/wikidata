@@ -127,6 +127,15 @@ class ItemTest < Minitest::Test
     assert_nil la_item.sitelink("nonexistent")
   end
 
+  def test_sitelink_badges
+    badges = la_item.sitelink_badges("enwiki")
+    assert_equal ["Q17437796"], badges
+  end
+
+  def test_sitelink_badges_empty_for_missing
+    assert_equal [], la_item.sitelink_badges("nonexistent")
+  end
+
   def test_all_labels
     labels = la_item.all_labels
     assert_equal "Los Angeles", labels["en"]

@@ -1,0 +1,75 @@
+{
+  "type": "lexeme",
+  "id": "L7",
+  "lemmas": {
+    "en": { "language": "en", "value": "cat" }
+  },
+  "language": "Q1860",
+  "lexicalCategory": "Q1084",
+  "claims": {
+    "P5831": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P5831",
+          "datavalue": {
+            "value": { "text": "cat", "language": "en" },
+            "type": "monolingualtext"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ]
+  },
+  "forms": [
+    {
+      "id": "L7-F4",
+      "representations": {
+        "en": { "language": "en", "value": "cat" }
+      },
+      "grammaticalFeatures": ["Q110786"],
+      "claims": {}
+    },
+    {
+      "id": "L7-F5",
+      "representations": {
+        "en": { "language": "en", "value": "cats" }
+      },
+      "grammaticalFeatures": ["Q146786"],
+      "claims": {}
+    }
+  ],
+  "senses": [
+    {
+      "id": "L7-S1",
+      "glosses": {
+        "en": { "language": "en", "value": "domesticated subspecies of feline animal" },
+        "es": { "language": "es", "value": "gato doméstico" }
+      },
+      "claims": {
+        "P5137": [
+          {
+            "mainsnak": {
+              "snaktype": "value",
+              "property": "P5137",
+              "datavalue": {
+                "value": { "entity-type": "item", "numeric-id": 146, "id": "Q146" },
+                "type": "wikibase-entityid"
+              }
+            },
+            "type": "statement",
+            "rank": "normal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "L7-S2",
+      "glosses": {
+        "en": { "language": "en", "value": "animal of the family Felidae" }
+      },
+      "claims": {}
+    }
+  ]
+}

@@ -68,15 +68,15 @@ module Wikidata
       end
       response.body["entities"].map do |entity_id, entity_hash|
         if entity_id.to_i != -1
-          item = Wikidata::Item.new(entity_hash)
+          entity = build_entity(entity_hash)
           # Cache under the requested ID
-          IdentityMap.cache!(entity_id, item)
+          IdentityMap.cache!(entity_id, entity)
           # Also cache under the real ID if this was a redirect
           real_id = entity_hash["id"] || entity_hash[:id]
           if real_id && real_id.to_s != entity_id.to_s
-            IdentityMap.cache!(real_id.to_s, item)
+            IdentityMap.cache!(real_id.to_s, entity)
           end
-          item
+          entity
         end
       end.compact
     end
@@ -220,6 +220,14 @@ module Wikidata
 
     def sitelink_badges(site = "enwiki")
       sitelink(site)&.badges || []
+    end
+
+    def self.build_entity(entity_hash)
+      case entity_hash["type"]
+      when "lexeme" then Wikidata::Lexeme.new(entity_hash)
+      when "property" then Wikidata::Property.new(entity_hash)
+      else Wikidata::Item.new(entity_hash)
+      end
     end
 
     def self.default_query_params

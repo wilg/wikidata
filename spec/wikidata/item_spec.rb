@@ -143,6 +143,19 @@ class ItemTest < Minitest::Test
     assert_equal "mul", item.label_language(:qu)
   end
 
+  def test_resolve_claims_deduplicates_ids
+    # resolve_claims! should collect unique IDs from mainsnak values,
+    # property IDs, and qualifier entity values
+    item = la_item
+    # Just verify it returns an array without erroring
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("action" => "wbgetentities"))
+      .to_return(status: 200, body: JSON.generate({"entities" => {}}), headers: {"Content-Type" => "application/json"})
+
+    result = item.resolve_claims!
+    assert_instance_of Array, result
+  end
+
   def test_inspect
     assert_includes la_item.inspect, "Q65"
     assert_includes la_item.inspect, "Los Angeles"

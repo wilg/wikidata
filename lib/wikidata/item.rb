@@ -28,9 +28,15 @@ module Wikidata
       ids = []
       claims.each do |claim|
         ids << claim.mainsnak.property_id
-        ids << claim.mainsnak.value.item_id if claim.mainsnak.value.instance_of?(Wikidata::DataValues::Entity)
+        if claim.mainsnak.value.instance_of?(Wikidata::DataValues::Entity)
+          ids << claim.mainsnak.value.item_id
+        end
+        claim.qualifiers.each do |q|
+          ids << q.property_id
+          ids << q.value.item_id if q.value.instance_of?(Wikidata::DataValues::Entity)
+        end
       end
-      self.class.find_all_by_id ids
+      self.class.find_all_by_id ids.uniq
     end
 
     def claims_for_property_id(property_id)

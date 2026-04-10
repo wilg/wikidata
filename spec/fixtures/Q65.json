@@ -69,6 +69,34 @@
             "type": "time"
           }
         },
+        "qualifiers": {
+          "P459": [
+            {
+              "snaktype": "value",
+              "property": "P459",
+              "datavalue": {
+                "value": { "entity-type": "item", "numeric-id": 39825 },
+                "type": "wikibase-entityid"
+              }
+            }
+          ]
+        },
+        "references": [
+          {
+            "snaks": {
+              "P248": [
+                {
+                  "snaktype": "value",
+                  "property": "P248",
+                  "datavalue": {
+                    "value": { "entity-type": "item", "numeric-id": 36578 },
+                    "type": "wikibase-entityid"
+                  }
+                }
+              ]
+            }
+          }
+        ],
         "type": "statement",
         "rank": "normal"
       }

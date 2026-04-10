@@ -120,12 +120,29 @@ class DataValuesYearTest < Minitest::Test
 end
 
 class DataValuesGlobecoordinateTest < Minitest::Test
-  def test_to_s
-    val = Wikidata::DataValues::Globecoordinate.new(
+  def make_coord
+    Wikidata::DataValues::Globecoordinate.new(
       "latitude" => 34.05, "longitude" => -118.25,
       "precision" => 0.00027777777777778, "globe" => "http://www.wikidata.org/entity/Q2"
     )
-    assert_equal "34.05, -118.25", val.to_s
+  end
+
+  def test_to_s
+    assert_equal "34.05, -118.25", make_coord.to_s
+  end
+
+  def test_accessors
+    c = make_coord
+    assert_equal 34.05, c.latitude
+    assert_equal(-118.25, c.longitude)
+    assert_equal "Q2", c.globe_item_id
+  end
+
+  def test_to_h
+    h = make_coord.to_h
+    assert_equal 34.05, h[:latitude]
+    assert_equal(-118.25, h[:longitude])
+    assert_equal "Q2", h[:globe]
   end
 end
 

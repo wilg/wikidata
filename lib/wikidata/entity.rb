@@ -89,28 +89,23 @@ module Wikidata
     end
 
     def self.find_by_id(id, **args)
-      # For single-ID fetches, try the REST API with ETag caching
+      # For single-ID fetches, use the REST API with ETag caching
       if Configuration.use_rest_api && id.is_a?(String) && !id.include?("|")
         if (cached = IdentityMap.cached_value(id))
           return cached
         end
 
         etag = IdentityMap.etag_for(id)
-        begin
-          result = RestClient.fetch_item(id, etag: etag)
-          if result.nil? && etag
-            # 304 Not Modified — refresh TTL and return cached value
-            IdentityMap.refresh_ttl!(id)
-            return IdentityMap.cached_value(id)
-          elsif result
-            entity_hash, new_etag = result
-            item = Wikidata::Item.new(entity_hash)
-            IdentityMap.cache!(id, item, etag: new_etag)
-            return item
-          end
-        rescue Wikidata::HttpError
-          # REST API failed — fall through to Action API
-          Configuration.logger.debug { "[Wikidata] REST API failed for #{id}, falling back to Action API" }
+        result = RestClient.fetch_item(id, etag: etag)
+        if result.nil? && etag
+          # 304 Not Modified — refresh TTL and return cached value
+          IdentityMap.refresh_ttl!(id)
+          return IdentityMap.cached_value(id)
+        elsif result
+          entity_hash, new_etag = result
+          item = Wikidata::Item.new(entity_hash)
+          IdentityMap.cache!(id, item, etag: new_etag)
+          return item
         end
       end
 

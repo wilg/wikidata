@@ -244,17 +244,17 @@ class RestApiIntegrationTest < Minitest::Test
     assert_equal "Cached", item2.label
   end
 
-  def test_find_by_id_falls_back_to_action_api
+  def test_find_by_id_uses_action_api_when_rest_disabled
     original = Wikidata::Configuration.use_rest_api
     Wikidata::Configuration.use_rest_api = false
 
     stub_request(:get, /wikidata\.org\/w\/api\.php/)
       .with(query: hash_including("ids" => "Q97"))
-      .to_return(status: 200, body: JSON.generate({"entities" => {"Q97" => {"id" => "Q97", "labels" => {"en" => {"language" => "en", "value" => "Fallback"}}}}}),
+      .to_return(status: 200, body: JSON.generate({"entities" => {"Q97" => {"id" => "Q97", "labels" => {"en" => {"language" => "en", "value" => "Action API"}}}}}),
         headers: {"Content-Type" => "application/json"})
 
     item = Wikidata::Item.find_by_id("Q97")
-    assert_equal "Fallback", item.label
+    assert_equal "Action API", item.label
   ensure
     Wikidata::Configuration.use_rest_api = original
   end

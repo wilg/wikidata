@@ -18,6 +18,8 @@ require "wikidata/datavalues/time"
 require "wikidata/datavalues/globecoordinate"
 require "wikidata/datavalues/entity"
 require "wikidata/datavalues/year"
+require "wikidata/datavalues/some_value"
+require "wikidata/datavalues/no_value"
 
 module Wikidata
   class << self

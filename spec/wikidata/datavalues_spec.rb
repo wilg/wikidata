@@ -80,3 +80,17 @@ class DataValuesCommonsMediaTest < Minitest::Test
     assert_includes val.url(width: 300), "width=300"
   end
 end
+
+class DataValuesSomeValueTest < Minitest::Test
+  def test_to_s
+    val = Wikidata::DataValues::SomeValue.new({})
+    assert_equal "Unknown value", val.to_s
+  end
+end
+
+class DataValuesNoValueTest < Minitest::Test
+  def test_to_s
+    val = Wikidata::DataValues::NoValue.new({})
+    assert_equal "No value", val.to_s
+  end
+end

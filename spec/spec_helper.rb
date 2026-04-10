@@ -1,10 +1,17 @@
 require "minitest/autorun"
 require "webmock/minitest"
+require "vcr"
 require "json"
 require "wikidata"
 
 # Disable all real HTTP connections in tests
 WebMock.disable_net_connect!
+
+VCR.configure do |config|
+  config.cassette_library_dir = File.join(File.dirname(__FILE__), "cassettes")
+  config.hook_into :webmock
+  config.default_cassette_options = {record: :none}
+end
 
 # Reset identity map and configuration between tests
 module TestHelpers

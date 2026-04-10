@@ -1,0 +1,78 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=en&sites=enwiki&titles=Xyzzy_Nonexistent_Page_12345
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v1.10.3
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 10 Apr 2026 20:48:48 GMT
+      Server:
+      - mw-api-ext.codfw.main-554d4845c9-m2xsh
+      X-Content-Type-Options:
+      - nosniff
+      Content-Security-Policy:
+      - default-src 'self'; script-src 'none'; object-src 'none'
+      X-Frame-Options:
+      - DENY
+      Content-Disposition:
+      - inline; filename=api-result.json
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Content-Type:
+      - application/json; charset=utf-8
+      Age:
+      - '0'
+      Accept-Ranges:
+      - bytes
+      X-Cache:
+      - cp4037 miss, cp4037 pass
+      X-Cache-Status:
+      - pass
+      Server-Timing:
+      - cache;desc="pass", host;desc="cp4037"
+      Strict-Transport-Security:
+      - max-age=106384710; includeSubDomains; preload
+      Report-To:
+      - '{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"
+        }] }'
+      Nel:
+      - '{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction":
+        0.0}'
+      Set-Cookie:
+      - GeoIP=US:CA:Los_Angeles:34.11:-118.26:v4; Path=/; secure; Domain=.wikidata.org
+      - NetworkProbeLimit=0.001;Path=/;Secure;SameSite=None;Max-Age=3600
+      - WMF-Last-Access-Global=10-Apr-2026;Path=/;Domain=.wikidata.org;HttpOnly;secure;Expires=Tue,
+        12 May 2026 12:00:00 GMT
+      - WMF-Last-Access=10-Apr-2026;Path=/;HttpOnly;secure;Expires=Tue, 12 May 2026
+        12:00:00 GMT
+      - WMF-Uniq=k52rhrMUFMq5K3gWOLmThAM-AAAAAFvdhqWLGwK461_IAELShMmjBtmgmPpO4sGh;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
+        10 Apr 2027 00:00:00 GMT
+      X-Client-Ip:
+      - 104.54.34.243
+      Vary:
+      - Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent
+      Content-Length:
+      - '101'
+      X-Request-Id:
+      - 5f301411-e2b0-4e37-b131-8038ffdf4aa8
+      X-Analytics:
+      - ''
+    body:
+      encoding: ASCII-8BIT
+      string: '{"entities":{"-1":{"site":"enwiki","title":"Xyzzy_Nonexistent_Page_12345","missing":""}},"success":1}'
+  recorded_at: Fri, 10 Apr 2026 20:48:48 GMT
+recorded_with: VCR 6.4.0

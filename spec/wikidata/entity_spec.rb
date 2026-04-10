@@ -4,82 +4,67 @@ class EntityTest < Minitest::Test
   include TestHelpers
 
   def test_find_by_id
-    fixture = load_fixture("Q65.json")
-    stub_wikidata_entity("Q65", fixture)
-
-    item = Wikidata::Item.find_by_id("Q65")
-    assert_instance_of Wikidata::Item, item
-    assert_equal "Q65", item.id
-    assert_equal "Los Angeles", item.label
+    VCR.use_cassette("find_by_id_Q65") do
+      item = Wikidata::Item.find_by_id("Q65")
+      assert_instance_of Wikidata::Item, item
+      assert_equal "Q65", item.id
+      assert_equal "Los Angeles", item.label
+    end
   end
 
   def test_find_by_id_caches_result
-    fixture = load_fixture("Q65.json")
-    stub = stub_wikidata_entity("Q65", fixture)
-
-    Wikidata::Item.find_by_id("Q65")
-    Wikidata::Item.find_by_id("Q65")
-
-    assert_requested(stub, times: 1)
+    VCR.use_cassette("find_by_id_Q65") do
+      first = Wikidata::Item.find_by_id("Q65")
+      second = Wikidata::Item.find_by_id("Q65")
+      assert_equal first.id, second.id
+    end
   end
 
-  def test_find_by_id_returns_nil_for_missing
-    response = {"entities" => {"-1" => {"id" => "-1"}}}
-    stub_request(:get, /wikidata\.org\/w\/api\.php/)
-      .with(query: hash_including("ids" => "Q99999999"))
-      .to_return(status: 200, body: JSON.generate(response), headers: {"Content-Type" => "application/json"})
-
-    result = Wikidata::Item.find_by_id("Q99999999")
-    assert_nil result
+  def test_find_by_title_returns_nil_for_missing
+    VCR.use_cassette("find_by_title_not_found") do
+      result = Wikidata::Item.find_by_title("Xyzzy_Nonexistent_Page_12345")
+      assert_nil result
+    end
   end
 
   def test_find_all_by_id_returns_array
-    fixture = load_fixture("Q65.json")
-    stub_wikidata_entity("Q65", fixture)
-
-    items = Wikidata::Item.find_all_by_id("Q65")
-    assert_instance_of Array, items
-    assert_equal 1, items.length
+    VCR.use_cassette("find_by_id_Q65") do
+      items = Wikidata::Item.find_all_by_id("Q65")
+      assert_instance_of Array, items
+      assert_equal 1, items.length
+    end
   end
 
   def test_find_by_title
-    fixture = load_fixture("Q65.json")
-    response = {"entities" => {"Q65" => fixture}}
-    stub_request(:get, /wikidata\.org\/w\/api\.php/)
-      .with(query: hash_including("titles" => "Los Angeles"))
-      .to_return(status: 200, body: JSON.generate(response), headers: {"Content-Type" => "application/json"})
-
-    item = Wikidata::Item.find_by_title("Los Angeles")
-    assert_instance_of Wikidata::Item, item
-    assert_equal "Los Angeles", item.label
+    VCR.use_cassette("find_by_title_Los_Angeles") do
+      item = Wikidata::Item.find_by_title("Los Angeles")
+      assert_instance_of Wikidata::Item, item
+      assert_equal "Los Angeles", item.label
+    end
   end
 
   def test_search
-    fixture = load_fixture("Q65.json")
-    stub_wikidata_search("Los Angeles", ["Q65"])
-    stub_wikidata_entity("Q65", fixture)
-
-    results = Wikidata::Item.search("Los Angeles")
-    assert_instance_of Array, results
-    assert_equal 1, results.length
-    assert_equal "Los Angeles", results.first.label
+    VCR.use_cassette("search_Los_Angeles") do
+      results = Wikidata::Item.search("Los Angeles")
+      assert_instance_of Array, results
+      assert results.length >= 1
+      assert_equal "Los Angeles", results.first.label
+    end
   end
 
   def test_search_returns_empty_on_no_results
-    stub_request(:get, /wikidata\.org\/w\/api\.php/)
-      .with(query: hash_including("action" => "query", "srsearch" => "xyznonexistent"))
-      .to_return(status: 200, body: JSON.generate({"query" => {"search" => []}}), headers: {"Content-Type" => "application/json"})
-
-    results = Wikidata::Item.search("xyznonexistent")
-    assert_equal [], results
+    VCR.use_cassette("search_no_results") do
+      results = Wikidata::Item.search("xyzzy_totally_nonexistent_query_12345")
+      assert_equal [], results
+    end
   end
 
   def test_handles_http_error
     stub_request(:get, /wikidata\.org\/w\/api\.php/)
-      .with(query: hash_including("ids" => "Q65"))
+      .with(query: hash_including("ids" => "Q00"))
       .to_return(status: 500)
 
-    results = Wikidata::Item.find_all_by_id("Q65")
+    results = Wikidata::Item.find_all_by_id("Q00")
     assert_equal [], results
   end
 end

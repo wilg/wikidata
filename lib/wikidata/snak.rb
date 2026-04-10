@@ -8,8 +8,24 @@ module Wikidata
       @property ||= Wikidata::Property.find_by_id(property_id)
     end
 
+    def no_value?
+      @data_hash["snaktype"] == "novalue"
+    end
+
+    def some_value?
+      @data_hash["snaktype"] == "somevalue"
+    end
+
+    def unknown?
+      no_value? || some_value?
+    end
+
     def value
-      @value ||= if @data_hash["snaktype"] == "novalue" || @data_hash["snaktype"] == "somevalue" || @data_hash["datavalue"].nil?
+      @value ||= if @data_hash["snaktype"] == "novalue"
+        Wikidata::DataValues::NoValue.new({})
+      elsif @data_hash["snaktype"] == "somevalue"
+        Wikidata::DataValues::SomeValue.new({})
+      elsif @data_hash["datavalue"].nil?
         nil
       elsif datavalue["type"] == "wikibase-entityid"
         Wikidata::DataValues::Entity.new(datavalue.value)

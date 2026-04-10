@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Wikidata
   module DataValues
     class Year < Wikidata::DataValues::Value

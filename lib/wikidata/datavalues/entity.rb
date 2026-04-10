@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Wikidata
   module DataValues
     class Entity < Wikidata::DataValues::Value
@@ -17,7 +19,7 @@ module Wikidata
         if kind == "item"
           @item ||= Wikidata::Item.find_by_id(item_id)
         else
-          raise "Unknown entity type"
+          raise Wikidata::Error, "Unknown entity type: #{kind}"
         end
       end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Wikidata
   require "thor"
   require "colorize"

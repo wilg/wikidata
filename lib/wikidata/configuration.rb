@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Wikidata
   class Configuration
     class << self
       attr_accessor :verbose, :use_only_default_language, :client_options, :property_presets, :faraday_adapter,
         :cache_store, :cache_ttl
 
-      def configure &block
+      def configure(&block)
         yield self
       end
 

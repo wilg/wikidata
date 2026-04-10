@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Wikidata
   class Snak < Wikidata::HashedObject
     def property_id

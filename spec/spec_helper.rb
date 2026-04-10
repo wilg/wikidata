@@ -16,7 +16,7 @@ end
 # Reset identity map and configuration between tests
 module TestHelpers
   def setup
-    Wikidata::IdentityMap.class_variable_set(:@@identity_map, {})
+    Wikidata::IdentityMap.reset!
     super
   end
 

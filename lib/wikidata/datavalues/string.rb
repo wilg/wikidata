@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Wikidata
   module DataValues
     class String < Wikidata::DataValues::Value

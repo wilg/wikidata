@@ -1,11 +1,10 @@
-require "active_support/core_ext/array"
-require "active_support/core_ext/object/blank"
+# frozen_string_literal: true
 
 module Wikidata
   class Entity < Wikidata::HashedObject
-    BASE_URL = "https://www.wikidata.org/w/api.php".freeze
+    BASE_URL = "https://www.wikidata.org/w/api.php"
 
-    def self.find_all query
+    def self.find_all(query)
       found_objects = []
 
       query = {
@@ -43,14 +42,14 @@ module Wikidata
 
       # Fetch by IDs
       if fetchable_ids.length > 0
-        fetchable_ids.in_groups_of(50, false) do |group|
+        fetchable_ids.each_slice(50) do |group|
           found_objects.concat query_and_build_objects(query.merge(ids: group.join("|")))
         end
       end
 
       # Fetch by titles
       if fetchable_titles.length > 0
-        fetchable_titles.in_groups_of(50, false) do |group|
+        fetchable_titles.each_slice(50) do |group|
           found_objects.concat query_and_build_objects(query.merge(titles: group.join("|")))
         end
       end
@@ -70,19 +69,19 @@ module Wikidata
       end.compact
     end
 
-    def self.find_all_by_id id, query = {}
+    def self.find_all_by_id(id, query = {})
       find_all({ids: id}.merge(query))
     end
 
-    def self.find_by_id *args
+    def self.find_by_id(*args)
       find_all_by_id(*args).first
     end
 
-    def self.find_all_by_title title, query = {}
+    def self.find_all_by_title(title, query = {})
       find_all({titles: title}.merge(query))
     end
 
-    def self.find_by_title *args
+    def self.find_by_title(*args)
       find_all_by_title(*args).first
     end
 
@@ -92,7 +91,7 @@ module Wikidata
     #  - query: Customise search
     #  - options: Customize resource
     # @return <Array>
-    def self.search search, args = {}
+    def self.search(search, args = {})
       query = {
         action: "query",
         list: "search",
@@ -103,7 +102,7 @@ module Wikidata
       options = args[:options] || {}
 
       response = get "", query
-      if response.status == 200 && (items = response.body["query"]["search"]).present?
+      if response.status == 200 && (items = response.body["query"]["search"]) && !items.empty?
         Wikidata::Item.find_all_by_id items.map { |i| i["title"] }, options
       else
         []

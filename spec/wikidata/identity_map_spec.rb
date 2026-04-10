@@ -29,4 +29,11 @@ class IdentityMapTest < Minitest::Test
     Wikidata::IdentityMap.if_uncached("Q_MISSING_#{rand(999999)}") { called = true }
     assert called
   end
+
+  def test_reset_clears_cache
+    item = Wikidata::Item.new({"id" => "Q3", "labels" => {}})
+    Wikidata::IdentityMap.cache!("Q3", item)
+    Wikidata::IdentityMap.reset!
+    assert_nil Wikidata::IdentityMap.cached_value("Q3")
+  end
 end

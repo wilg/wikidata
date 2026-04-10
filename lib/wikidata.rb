@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "faraday"
 require "hashie"
 require "i18n"
@@ -21,8 +23,10 @@ require "wikidata/datavalues/some_value"
 require "wikidata/datavalues/no_value"
 
 module Wikidata
+  class Error < StandardError; end
+
   class << self
-    def configure &block
+    def configure(&block)
       Configuration.configure(&block)
     end
 

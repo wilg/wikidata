@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Wikidata
   class MashSubclass < Hashie::Mash
     disable_warnings
@@ -11,11 +13,11 @@ module Wikidata
     end
 
     def respond_to_missing?(method_name, include_private = false)
-      data_hash.has_key?(method_name.to_s)
+      data_hash.key?(method_name.to_s)
     end
 
     def method_missing(method_name, *args, &block)
-      if data_hash.has_key?(method_name.to_s)
+      if data_hash.key?(method_name.to_s)
         data_hash[method_name.to_s]
       else
         super

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Wikidata
   module DataValues
     class NoValue < Wikidata::DataValues::Value

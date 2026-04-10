@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Wikidata
   class Item < Wikidata::Entity
     def claims
@@ -56,7 +58,7 @@ module Wikidata
     end
 
     def subclass_of?(entity_id, depth: 0)
-      return true if Array.wrap(entity_id).include?(id)
+      return true if Array(entity_id).include?(id)
       return false if depth <= 0
 
       subclass_of.any? do |entity|
@@ -65,14 +67,14 @@ module Wikidata
     end
 
     def entity_instance_of?(entity_id, depth: 0)
-      return true if Array.wrap(entity_id).include?(id)
+      return true if Array(entity_id).include?(id)
       return false if depth <= 0
 
       instance_of.any? { |entity| entity.subclass_of?(entity_id, depth: depth - 1) }
     end
 
     def instance_or_subclass_of?(entity_ids, depth: 0)
-      entity_ids = Array.wrap(entity_ids)
+      entity_ids = Array(entity_ids)
       return true if entity_ids.include?(id)
 
       queue = Entity.find_all_by_id(item_ids_for_property_id(:instance_of) + item_ids_for_property_id(:subclass_of))
@@ -100,7 +102,7 @@ module Wikidata
 
     def websites
       website_claims = claims_for_property_id("P856")
-      return [] unless website_claims.present?
+      return [] if website_claims.empty?
       website_claims.map(&:mainsnak).map(&:value).map(&:string)
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Wikidata
   class Statement < Wikidata::HashedObject
     def mainsnak

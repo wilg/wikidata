@@ -40,10 +40,20 @@ class DataValuesYearTest < Minitest::Test
   end
 
   def test_bce_year
-    # Current implementation splits on "-" so BCE years return 0
-    # This documents existing behavior — proper BCE support tracked separately
     val = Wikidata::DataValues::Year.new("time" => "-0500-00-00T00:00:00Z", "precision" => 9)
-    assert_equal 0, val.to_i
+    assert_equal(-500, val.to_i)
+    assert val.bce?
+    assert_equal "500 BCE", val.to_s
+  end
+
+  def test_bce_predicate_false_for_ce
+    val = Wikidata::DataValues::Year.new("time" => "+2020-00-00T00:00:00Z", "precision" => 9)
+    refute val.bce?
+  end
+
+  def test_precision_accessor
+    val = Wikidata::DataValues::Year.new("time" => "+1800-00-00T00:00:00Z", "precision" => 7)
+    assert_equal 7, val.precision
   end
 end
 

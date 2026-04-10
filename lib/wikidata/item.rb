@@ -47,6 +47,16 @@ module Wikidata
       all.reject { |c| c.data_hash["rank"] == "deprecated" }
     end
 
+    def best_value_for(property_id)
+      ranked_claims_for_property_id(property_id).first&.mainsnak&.value
+    end
+
+    def values_for(property_id, limit: nil)
+      claims = ranked_claims_for_property_id(property_id)
+      claims = claims.first(limit) if limit
+      claims.map { |c| c.mainsnak.value }
+    end
+
     def entities_for_property_id(property_id)
       Wikidata::Item.find_all_by_id(item_ids_for_property_id(property_id))
     end

@@ -58,6 +58,41 @@ class ItemTest < Minitest::Test
     assert_equal [], item.claims
   end
 
+  def test_best_value_for
+    val = la_item.best_value_for("P625")
+    assert_instance_of Wikidata::DataValues::Globecoordinate, val
+  end
+
+  def test_best_value_for_respects_rank
+    val = la_item.best_value_for("P6")
+    assert_instance_of Wikidata::DataValues::Entity, val
+    assert_equal "Q380900", val.item_id
+  end
+
+  def test_best_value_for_missing_property
+    assert_nil la_item.best_value_for("P99999")
+  end
+
+  def test_values_for
+    vals = la_item.values_for("P6")
+    # preferred rank only (1 claim)
+    assert_equal 1, vals.length
+  end
+
+  def test_values_for_with_limit
+    item_data = load_fixture("Q65.json")
+    # Remove preferred so we get normal claims
+    item_data["claims"]["P6"].reject! { |c| c["rank"] == "preferred" }
+    item = Wikidata::Item.new(item_data)
+
+    vals = item.values_for("P6", limit: 1)
+    assert_equal 1, vals.length
+  end
+
+  def test_values_for_missing_property
+    assert_equal [], la_item.values_for("P99999")
+  end
+
   def test_image
     img = la_item.image
     assert_instance_of Wikidata::DataValues::CommonsMedia, img

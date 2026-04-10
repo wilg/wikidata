@@ -1,0 +1,155 @@
+{
+  "type": "item",
+  "id": "Q65",
+  "labels": {
+    "en": { "language": "en", "value": "Los Angeles" }
+  },
+  "descriptions": {
+    "en": { "language": "en", "value": "city in California, United States" }
+  },
+  "claims": {
+    "P31": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P31",
+          "datavalue": {
+            "value": { "entity-type": "item", "numeric-id": 515 },
+            "type": "wikibase-entityid"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ],
+    "P625": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P625",
+          "datavalue": {
+            "value": {
+              "latitude": 34.05,
+              "longitude": -118.25,
+              "altitude": null,
+              "precision": 0.00027777777777778,
+              "globe": "http://www.wikidata.org/entity/Q2"
+            },
+            "type": "globecoordinate"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ],
+    "P571": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P571",
+          "datavalue": {
+            "value": {
+              "time": "+1781-09-04T00:00:00Z",
+              "timezone": 0,
+              "before": 0,
+              "after": 0,
+              "precision": 11,
+              "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+            },
+            "type": "time"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ],
+    "P856": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P856",
+          "datavalue": {
+            "value": "https://www.lacity.org/",
+            "type": "string"
+          },
+          "datatype": "url"
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ],
+    "P18": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P18",
+          "datavalue": {
+            "value": "LA Skyline Mountains2.jpg",
+            "type": "string"
+          },
+          "datatype": "commonsMedia"
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ],
+    "P6": [
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P6",
+          "datavalue": {
+            "value": { "entity-type": "item", "numeric-id": 380900 },
+            "type": "wikibase-entityid"
+          }
+        },
+        "type": "statement",
+        "rank": "preferred"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P6",
+          "datavalue": {
+            "value": { "entity-type": "item", "numeric-id": 348590 },
+            "type": "wikibase-entityid"
+          }
+        },
+        "type": "statement",
+        "rank": "normal"
+      },
+      {
+        "mainsnak": {
+          "snaktype": "value",
+          "property": "P6",
+          "datavalue": {
+            "value": { "entity-type": "item", "numeric-id": 12345 },
+            "type": "wikibase-entityid"
+          }
+        },
+        "type": "statement",
+        "rank": "deprecated"
+      }
+    ],
+    "P1082": [
+      {
+        "mainsnak": {
+          "snaktype": "somevalue",
+          "property": "P1082"
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ],
+    "P40": [
+      {
+        "mainsnak": {
+          "snaktype": "novalue",
+          "property": "P40"
+        },
+        "type": "statement",
+        "rank": "normal"
+      }
+    ]
+  }
+}

@@ -29,7 +29,7 @@ module Wikidata
       children: "P40",
       doctoral_advisor: "P184",
       instance_of: "P31",
-      subclass_of: "P279",
+      subclass_of: "P279"
     }
   end
 end

@@ -29,5 +29,5 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
-      - name: Verify gem loads
-        run: bundle exec ruby -e "require 'wikidata'; puts \"Wikidata v#{Wikidata::VERSION} loaded on Ruby #{RUBY_VERSION}\""
+      - name: Run tests
+        run: bundle exec rake spec

@@ -1,4 +1,5 @@
 require "active_support/core_ext/array"
+require "active_support/core_ext/object/blank"
 
 module Wikidata
   class Entity < Wikidata::HashedObject
@@ -116,7 +117,7 @@ module Wikidata
     def delocalize(hash, locale = I18n.default_locale)
       return nil unless hash
       h = hash[locale.to_s]
-      h ? h.value : nil
+      h&.value
     end
 
     def label(*args)

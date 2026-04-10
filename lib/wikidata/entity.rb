@@ -100,12 +100,13 @@ module Wikidata
     #  - query: Customise search
     #  - options: Customize resource
     # @return <Array>
-    def self.search(search, args = {})
+    def self.search(search, limit: 10, offset: 0, **args)
       query = {
         action: "query",
         list: "search",
         format: "json",
-        srlimit: 10,
+        srlimit: limit,
+        sroffset: offset,
         srsearch: search
       }.merge(default_query_params).merge(args[:query] || {})
       options = args[:options] || {}

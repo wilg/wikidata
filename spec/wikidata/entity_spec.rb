@@ -52,6 +52,22 @@ class EntityTest < Minitest::Test
     end
   end
 
+  def test_search_with_limit
+    stub_wikidata_search("test_query", ["Q1", "Q2", "Q3"])
+    # Stub the batch entity fetch that search triggers
+    response = {"entities" => {
+      "Q1" => {"id" => "Q1", "labels" => {"en" => {"value" => "A"}}},
+      "Q2" => {"id" => "Q2", "labels" => {"en" => {"value" => "B"}}},
+      "Q3" => {"id" => "Q3", "labels" => {"en" => {"value" => "C"}}}
+    }}
+    stub_request(:get, /wikidata\.org\/w\/api\.php/)
+      .with(query: hash_including("ids" => "Q1|Q2|Q3"))
+      .to_return(status: 200, body: JSON.generate(response), headers: {"Content-Type" => "application/json"})
+
+    results = Wikidata::Item.search("test_query", limit: 3)
+    assert_equal 3, results.length
+  end
+
   def test_search_returns_empty_on_no_results
     VCR.use_cassette("search_no_results") do
       results = Wikidata::Item.search("xyzzy_totally_nonexistent_query_12345")

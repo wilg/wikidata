@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://www.wikidata.org/w/api.php?action=query&format=json&list=search&srlimit=10&srsearch=xyzzy_totally_nonexistent_query_12345
+    uri: https://www.wikidata.org/w/api.php?action=query&format=json&list=search&srlimit=10&sroffset=0&srsearch=xyzzy_totally_nonexistent_query_12345
     body:
       encoding: US-ASCII
       string: ''
@@ -19,13 +19,13 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 10 Apr 2026 22:30:14 GMT
+      - Fri, 10 Apr 2026 22:41:05 GMT
       Server:
-      - mw-api-ext.codfw.main-554d4845c9-pxxxl
+      - mw-api-ext.codfw.main-554d4845c9-gq7tf
       X-Content-Type-Options:
       - nosniff
       X-Search-Id:
-      - dwwh8jodaxryjy04gjjy5qz6q
+      - doi1k6wr748vlnqtevo41ifc8
       Content-Security-Policy:
       - default-src 'self'; script-src 'none'; object-src 'none'
       X-Frame-Options:
@@ -61,7 +61,7 @@ http_interactions:
         12 May 2026 12:00:00 GMT
       - WMF-Last-Access=10-Apr-2026;Path=/;HttpOnly;secure;Expires=Tue, 12 May 2026
         12:00:00 GMT
-      - WMF-Uniq=mCT6-63D7j_w9cA9URi7zgM-AAAAAFvdSmKvcgA_C19tZW0B9xdk281RDvogFmAB;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
+      - WMF-Uniq=xY9rhpGK2eEQaMyzueYXwgM-AAAAAFvdVn1pLFKx24qaQsf2O97eiqwvIXAs69sU;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
         10 Apr 2027 00:00:00 GMT
       X-Client-Ip:
       - 104.54.34.243
@@ -70,11 +70,11 @@ http_interactions:
       Content-Length:
       - '71'
       X-Request-Id:
-      - fde2949a-7b06-4b4b-ad6f-dd1adbd4ee3a
+      - eb6f0795-291e-459b-8d27-b2fa60fd4d7c
       X-Analytics:
       - ''
     body:
       encoding: ASCII-8BIT
       string: '{"batchcomplete":"","query":{"searchinfo":{"totalhits":0},"search":[]}}'
-  recorded_at: Fri, 10 Apr 2026 22:30:14 GMT
+  recorded_at: Fri, 10 Apr 2026 22:41:05 GMT
 recorded_with: VCR 6.4.0

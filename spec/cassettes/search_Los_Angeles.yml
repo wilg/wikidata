@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://www.wikidata.org/w/api.php?action=query&format=json&list=search&srlimit=10&srsearch=Los%20Angeles
+    uri: https://www.wikidata.org/w/api.php?action=query&format=json&list=search&srlimit=10&sroffset=0&srsearch=Los%20Angeles
     body:
       encoding: US-ASCII
       string: ''
@@ -19,96 +19,13 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 10 Apr 2026 22:30:28 GMT
+      - Fri, 10 Apr 2026 22:41:04 GMT
       Server:
-      - mw-api-ext.codfw.main-554d4845c9-4mx25
+      - mw-api-ext.codfw.main-554d4845c9-24b7p
       X-Content-Type-Options:
       - nosniff
       X-Search-Id:
-      - dbljv1pcsrxmnmzpf77fu5klg
-      Content-Security-Policy:
-      - default-src 'self'; script-src 'none'; object-src 'none'
-      X-Frame-Options:
-      - DENY
-      Content-Disposition:
-      - inline; filename=api-result.json
-      Cache-Control:
-      - private, must-revalidate, max-age=0
-      Content-Type:
-      - application/json; charset=utf-8
-      Age:
-      - '0'
-      X-Cache:
-      - cp4037 miss, cp4037 pass
-      X-Cache-Status:
-      - pass
-      Server-Timing:
-      - cache;desc="pass", host;desc="cp4037"
-      Strict-Transport-Security:
-      - max-age=106384710; includeSubDomains; preload
-      Report-To:
-      - '{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"
-        }] }'
-      Nel:
-      - '{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction":
-        0.0}'
-      Set-Cookie:
-      - GeoIP=US:CA:Los_Angeles:34.11:-118.26:v4; Path=/; secure; Domain=.wikidata.org
-      - NetworkProbeLimit=0.001;Path=/;Secure;SameSite=None;Max-Age=3600
-      - WMF-Last-Access-Global=10-Apr-2026;Path=/;Domain=.wikidata.org;HttpOnly;secure;Expires=Tue,
-        12 May 2026 12:00:00 GMT
-      - WMF-Last-Access=10-Apr-2026;Path=/;HttpOnly;secure;Expires=Tue, 12 May 2026
-        12:00:00 GMT
-      - WMF-Uniq=wwXNmFipKT7o2iQNlzAPQAM-AAAAAFvdxFr17yVfF0G9BzAm_yDk_dR9IuPmIPDZ;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
-        10 Apr 2027 00:00:00 GMT
-      X-Client-Ip:
-      - 104.54.34.243
-      Vary:
-      - Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent
-      Content-Length:
-      - '1733'
-      X-Request-Id:
-      - 34847ab8-4dac-4432-8a0a-2cab807a3f19
-      X-Analytics:
-      - ''
-    body:
-      encoding: ASCII-8BIT
-      string: '{"batchcomplete":"","continue":{"sroffset":10,"continue":"-||"},"query":{"searchinfo":{"totalhits":41603},"search":[{"ns":0,"title":"Q65","pageid":192,"size":null,"wordcount":0,"snippet":"seat
-        of Los Angeles County, and largest city in California, United States","timestamp":"2026-04-09T19:34:48Z"},{"ns":0,"title":"Q174710","pageid":174613,"size":null,"wordcount":0,"snippet":"public
-        university in Los Angeles, California, USA","timestamp":"2026-04-06T18:54:14Z"},{"ns":0,"title":"Q16910","pageid":19658,"size":null,"wordcount":0,"snippet":"city
-        in Chile","timestamp":"2026-03-27T19:12:34Z"},{"ns":0,"title":"Q104994","pageid":107655,"size":null,"wordcount":0,"snippet":"county
-        in California, United States","timestamp":"2026-04-05T05:27:07Z"},{"ns":0,"title":"Q1026932","pageid":976213,"size":null,"wordcount":0,"snippet":"public
-        university in Los Angeles, California, United States","timestamp":"2026-04-06T08:13:23Z"},{"ns":0,"title":"Q188515","pageid":187168,"size":null,"wordcount":0,"snippet":"American
-        daily newspaper covering the Greater Los Angeles area","timestamp":"2026-02-26T06:24:00Z"},{"ns":0,"title":"Q849784","pageid":801700,"size":null,"wordcount":0,"snippet":"stadium
-        in Los Angeles, California, USA","timestamp":"2025-07-28T11:42:57Z"},{"ns":0,"title":"Q8143","pageid":9427,"size":null,"wordcount":0,"snippet":"Games
-        of the X Olympiad, in Los Angeles, USA","timestamp":"2026-03-22T15:30:38Z"},{"ns":0,"title":"Q8731","pageid":10056,"size":null,"wordcount":0,"snippet":"airport
-        serving the Greater Los Angeles Area","timestamp":"2026-04-05T10:34:56Z"},{"ns":0,"title":"Q1641836","pageid":1575960,"size":null,"wordcount":0,"snippet":"art
-        museum in Los Angeles, United States","timestamp":"2026-04-05T16:54:38Z"}]}}'
-  recorded_at: Fri, 10 Apr 2026 22:30:28 GMT
-- request:
-    method: get
-    uri: https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids=Q65%7CQ174710%7CQ16910%7CQ104994%7CQ1026932%7CQ188515%7CQ849784%7CQ8143%7CQ8731%7CQ1641836&languagefallback=&languages=en&sites=enwiki
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - wikidata-ruby/0.0.4 (https://github.com/wilg/wikidata)
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Date:
-      - Fri, 10 Apr 2026 22:30:29 GMT
-      Server:
-      - mw-api-ext.codfw.main-554d4845c9-88mtx
-      X-Content-Type-Options:
-      - nosniff
+      - 514zxtmhdc6b0e2p8vj44h2ga
       Content-Security-Policy:
       - default-src 'self'; script-src 'none'; object-src 'none'
       X-Frame-Options:
@@ -144,7 +61,92 @@ http_interactions:
         12 May 2026 12:00:00 GMT
       - WMF-Last-Access=10-Apr-2026;Path=/;HttpOnly;secure;Expires=Tue, 12 May 2026
         12:00:00 GMT
-      - WMF-Uniq=Fc8lmRASx4VXsjnMolmDBwM-AAAAAFvdcHpmz2duiCcPsku3YQWrI0dBKdAlqTqx;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
+      - WMF-Uniq=BFjCzFWQukp0zHI-ZiyCbAM-AAAAAFvduh22Gu3ykZdmiHqz5UQBB9-oRBiMq8dR;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
+        10 Apr 2027 00:00:00 GMT
+      X-Client-Ip:
+      - 104.54.34.243
+      Vary:
+      - Accept-Encoding,X-Subdomain,Treat-as-Untrusted,X-Forwarded-Proto,Cookie,Authorization,User-Agent
+      Content-Length:
+      - '1733'
+      X-Request-Id:
+      - bc599e9d-05d1-45ce-88c6-505a77d4fcbc
+      X-Analytics:
+      - ''
+    body:
+      encoding: ASCII-8BIT
+      string: '{"batchcomplete":"","continue":{"sroffset":10,"continue":"-||"},"query":{"searchinfo":{"totalhits":41617},"search":[{"ns":0,"title":"Q65","pageid":192,"size":null,"wordcount":0,"snippet":"seat
+        of Los Angeles County, and largest city in California, United States","timestamp":"2026-04-09T19:34:48Z"},{"ns":0,"title":"Q174710","pageid":174613,"size":null,"wordcount":0,"snippet":"public
+        university in Los Angeles, California, USA","timestamp":"2026-04-06T18:54:14Z"},{"ns":0,"title":"Q16910","pageid":19658,"size":null,"wordcount":0,"snippet":"city
+        in Chile","timestamp":"2026-03-27T19:12:34Z"},{"ns":0,"title":"Q104994","pageid":107655,"size":null,"wordcount":0,"snippet":"county
+        in California, United States","timestamp":"2026-04-05T05:27:07Z"},{"ns":0,"title":"Q1026932","pageid":976213,"size":null,"wordcount":0,"snippet":"public
+        university in Los Angeles, California, United States","timestamp":"2026-04-06T08:13:23Z"},{"ns":0,"title":"Q188515","pageid":187168,"size":null,"wordcount":0,"snippet":"American
+        daily newspaper covering the Greater Los Angeles area","timestamp":"2026-02-26T06:24:00Z"},{"ns":0,"title":"Q849784","pageid":801700,"size":null,"wordcount":0,"snippet":"stadium
+        in Los Angeles, California, USA","timestamp":"2025-07-28T11:42:57Z"},{"ns":0,"title":"Q8143","pageid":9427,"size":null,"wordcount":0,"snippet":"Games
+        of the X Olympiad, in Los Angeles, USA","timestamp":"2026-03-22T15:30:38Z"},{"ns":0,"title":"Q8731","pageid":10056,"size":null,"wordcount":0,"snippet":"airport
+        serving the Greater Los Angeles Area","timestamp":"2026-04-05T10:34:56Z"},{"ns":0,"title":"Q1641836","pageid":1575960,"size":null,"wordcount":0,"snippet":"art
+        museum in Los Angeles, United States","timestamp":"2026-04-05T16:54:38Z"}]}}'
+  recorded_at: Fri, 10 Apr 2026 22:41:04 GMT
+- request:
+    method: get
+    uri: https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids=Q65%7CQ174710%7CQ16910%7CQ104994%7CQ1026932%7CQ188515%7CQ849784%7CQ8143%7CQ8731%7CQ1641836&languagefallback=&languages=en&sites=enwiki
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - wikidata-ruby/0.0.4 (https://github.com/wilg/wikidata)
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 10 Apr 2026 22:41:04 GMT
+      Server:
+      - mw-api-ext.codfw.main-554d4845c9-mtzj4
+      X-Content-Type-Options:
+      - nosniff
+      Content-Security-Policy:
+      - default-src 'self'; script-src 'none'; object-src 'none'
+      X-Frame-Options:
+      - DENY
+      Content-Disposition:
+      - inline; filename=api-result.json
+      Cache-Control:
+      - private, must-revalidate, max-age=0
+      Content-Type:
+      - application/json; charset=utf-8
+      Age:
+      - '2'
+      Accept-Ranges:
+      - bytes
+      X-Cache:
+      - cp4037 miss, cp4037 pass
+      X-Cache-Status:
+      - pass
+      Server-Timing:
+      - cache;desc="pass", host;desc="cp4037"
+      Strict-Transport-Security:
+      - max-age=106384710; includeSubDomains; preload
+      Report-To:
+      - '{ "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0"
+        }] }'
+      Nel:
+      - '{ "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction":
+        0.0}'
+      Set-Cookie:
+      - GeoIP=US:CA:Los_Angeles:34.11:-118.26:v4; Path=/; secure; Domain=.wikidata.org
+      - NetworkProbeLimit=0.001;Path=/;Secure;SameSite=None;Max-Age=3600
+      - WMF-Last-Access-Global=10-Apr-2026;Path=/;Domain=.wikidata.org;HttpOnly;secure;Expires=Tue,
+        12 May 2026 12:00:00 GMT
+      - WMF-Last-Access=10-Apr-2026;Path=/;HttpOnly;secure;Expires=Tue, 12 May 2026
+        12:00:00 GMT
+      - WMF-Uniq=2HdoVI3izhSzi9yqg_BCrwM-AAAAAFvdhAeq7mnQf9Jk9C5yqUuDN0080_6AsRpQ;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
         10 Apr 2027 00:00:00 GMT
       X-Client-Ip:
       - 104.54.34.243
@@ -153,7 +155,7 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       X-Request-Id:
-      - 671befd3-f6d3-4910-a629-0d753d862c6f
+      - 993eca22-33b2-4963-aaff-04c981fbc9a3
       X-Analytics:
       - ''
     body:
@@ -1169,5 +1171,5 @@ http_interactions:
         \u041b\u043e\u0441-\u0410\u043d\u0434\u0436\u0435\u043b\u0435\u0441","badges":[]},"urwiki":{"site":"urwiki","title":"\u0644\u0627\u0633
         \u0627\u06cc\u0646\u062c\u0644\u0633 \u06a9\u0627\u0624\u0646\u0679\u06cc
         \u0645\u06cc\u0648\u0632\u06cc\u0645 \u0622\u0641 \u0622\u0631\u0679","badges":[]},"wuuwiki":{"site":"wuuwiki","title":"\u6d1b\u6749\u78ef\u90e1\u85dd\u8853\u535a\u7269\u9928","badges":[]},"zh_yuewiki":{"site":"zh_yuewiki","title":"\u6d1b\u6749\u78ef\u7e23\u85dd\u8853\u535a\u7269\u9928","badges":[]},"zhwiki":{"site":"zhwiki","title":"\u6d1b\u6749\u78ef\u90e1\u85dd\u8853\u535a\u7269\u9928","badges":[]}}}},"success":1}'
-  recorded_at: Fri, 10 Apr 2026 22:30:29 GMT
+  recorded_at: Fri, 10 Apr 2026 22:41:05 GMT
 recorded_with: VCR 6.4.0

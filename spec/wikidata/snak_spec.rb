@@ -146,7 +146,7 @@ class SnakTest < Minitest::Test
     assert_instance_of Wikidata::DataValues::Quantity, snak.value
     assert_equal 3_976_322.0, snak.value.amount
     assert_equal "Q11573", snak.value.unit_item_id
-    assert_equal "3976322.0", snak.value.to_s
+    assert_equal "3976322", snak.value.to_s
   end
 
   def test_quantity_value_dimensionless

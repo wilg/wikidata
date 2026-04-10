@@ -85,14 +85,52 @@ class SnakTest < Minitest::Test
     assert_includes snak.value.url, "LA+Skyline+Mountains2.jpg"
   end
 
-  def test_novalue_returns_nil
+  def test_novalue_returns_no_value_object
     snak = make_snak("snaktype" => "novalue", "property" => "P40")
-    assert_nil snak.value
+    assert_instance_of Wikidata::DataValues::NoValue, snak.value
+    assert_equal "No value", snak.value.to_s
   end
 
-  def test_somevalue_returns_nil
+  def test_somevalue_returns_some_value_object
     snak = make_snak("snaktype" => "somevalue", "property" => "P1082")
-    assert_nil snak.value
+    assert_instance_of Wikidata::DataValues::SomeValue, snak.value
+    assert_equal "Unknown value", snak.value.to_s
+  end
+
+  def test_no_value_predicate
+    novalue_snak = make_snak("snaktype" => "novalue", "property" => "P40")
+    assert novalue_snak.no_value?
+
+    value_snak = make_snak("snaktype" => "value", "property" => "P31", "datavalue" => {
+      "value" => {"entity-type" => "item", "numeric-id" => 515},
+      "type" => "wikibase-entityid"
+    })
+    refute value_snak.no_value?
+  end
+
+  def test_some_value_predicate
+    somevalue_snak = make_snak("snaktype" => "somevalue", "property" => "P1082")
+    assert somevalue_snak.some_value?
+
+    value_snak = make_snak("snaktype" => "value", "property" => "P31", "datavalue" => {
+      "value" => {"entity-type" => "item", "numeric-id" => 515},
+      "type" => "wikibase-entityid"
+    })
+    refute value_snak.some_value?
+  end
+
+  def test_unknown_predicate
+    novalue_snak = make_snak("snaktype" => "novalue", "property" => "P40")
+    assert novalue_snak.unknown?
+
+    somevalue_snak = make_snak("snaktype" => "somevalue", "property" => "P1082")
+    assert somevalue_snak.unknown?
+
+    value_snak = make_snak("snaktype" => "value", "property" => "P31", "datavalue" => {
+      "value" => {"entity-type" => "item", "numeric-id" => 515},
+      "type" => "wikibase-entityid"
+    })
+    refute value_snak.unknown?
   end
 
   def test_nil_datavalue_returns_nil

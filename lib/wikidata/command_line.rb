@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
+require "json"
+
 module Wikidata
   require "thor"
   require "colorize"
   require "terminal-table"
 
   class CommandLine < Thor
+    class_option :format, default: "table", type: :string, enum: ["table", "json"], desc: "Output format"
+
     desc "find ARTICLE_NAME", "find a Wikidata entity by name"
     method_option :fast, default: false, type: :boolean, aliases: "-f"
     method_option :verbose, default: false, type: :boolean, aliases: "-v"
@@ -67,7 +71,18 @@ module Wikidata
       Wikidata.verbose = options[:verbose]
     end
 
+    def json_format?
+      options[:format] == "json"
+    end
+
     def display_list(items)
+      if json_format?
+        puts JSON.pretty_generate(items.map { |item|
+          {id: item.id, label: item.label, description: item.description}
+        })
+        return
+      end
+
       rows = items.map do |item|
         [item.id, item.label, item.description]
       end
@@ -84,6 +99,10 @@ module Wikidata
     end
 
     def display_item(item)
+      if item && json_format?
+        puts JSON.pretty_generate(item.data_hash.to_h)
+        return
+      end
       if item
         puts item.label.green if item.label
         puts item.description.cyan if item.description

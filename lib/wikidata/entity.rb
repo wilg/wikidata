@@ -10,7 +10,8 @@ module Wikidata
       query = {
         action: "wbgetentities",
         sites: "enwiki",
-        format: "json"
+        format: "json",
+        languagefallback: ""
       }.merge(default_query_params).merge(Wikidata.default_languages_hash).merge(query)
 
       query[:languages] = query[:languages].join("|") if query[:languages].is_a? Array
@@ -129,6 +130,18 @@ module Wikidata
       delocalize data_hash.labels, *args
     end
 
+    def label_language(locale = I18n.default_locale)
+      h = data_hash.labels&.dig(locale.to_s)
+      return nil unless h
+      h["language"] || locale.to_s
+    end
+
+    def label_is_fallback?(locale = I18n.default_locale)
+      h = data_hash.labels&.dig(locale.to_s)
+      return false unless h
+      h.key?("for-language")
+    end
+
     def description(*args)
       delocalize data_hash.descriptions, *args
     end
@@ -191,7 +204,6 @@ module Wikidata
     def self.client
       Faraday.new({url: BASE_URL}.merge(Wikidata.client_options)) do |faraday|
         faraday.headers["User-Agent"] = Configuration.user_agent || default_user_agent
-        faraday.headers["Accept-Encoding"] = "gzip"
         faraday.request :url_encoded
         faraday.response :json, content_type: /\bjson$/
         faraday.adapter Wikidata::Configuration.faraday_adapter

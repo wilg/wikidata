@@ -2,13 +2,13 @@
 http_interactions:
 - request:
     method: get
-    uri: https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=en&sites=enwiki&titles=Los%20Angeles
+    uri: https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languagefallback=&languages=en&sites=enwiki&titles=Los%20Angeles
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - Faraday v1.10.3
+      - wikidata-ruby/0.0.4 (https://github.com/wilg/wikidata)
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -19,9 +19,9 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 10 Apr 2026 20:47:30 GMT
+      - Fri, 10 Apr 2026 22:30:12 GMT
       Server:
-      - mw-api-ext.codfw.main-554d4845c9-9gxt9
+      - mw-api-ext.codfw.main-554d4845c9-qwbxm
       X-Content-Type-Options:
       - nosniff
       Content-Security-Policy:
@@ -35,7 +35,7 @@ http_interactions:
       Content-Type:
       - application/json; charset=utf-8
       Age:
-      - '0'
+      - '2'
       Accept-Ranges:
       - bytes
       X-Cache:
@@ -59,7 +59,7 @@ http_interactions:
         12 May 2026 12:00:00 GMT
       - WMF-Last-Access=10-Apr-2026;Path=/;HttpOnly;secure;Expires=Tue, 12 May 2026
         12:00:00 GMT
-      - WMF-Uniq=PwXv23CaRZaEN7r2-isg7wM-AAAAAFvdv8m7KvFFMDhzV8k2XhLLwtp6kp6hFaEt;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
+      - WMF-Uniq=s9wBcuElfNf82J0Fwzf0ZgM-AAAAAFvdnbvCFgbil9BGgNoPzl3bw_Ekpj20UOp8;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
         10 Apr 2027 00:00:00 GMT
       X-Client-Ip:
       - 104.54.34.243
@@ -68,7 +68,7 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       X-Request-Id:
-      - '0729f362-78f7-4036-979b-2ef6b8d5b075'
+      - 05460c1b-57f0-47a4-a9e0-e6d413de557b
       X-Analytics:
       - ''
     body:
@@ -298,5 +298,5 @@ http_interactions:
         Angeles","badges":[]},"wuuwiki":{"site":"wuuwiki","title":"\u6d1b\u6749\u77f6","badges":[]},"xmfwiki":{"site":"xmfwiki","title":"\u10da\u10dd\u10e1-\u10d0\u10dc\u10ef\u10d4\u10da\u10d4\u10e1\u10d8","badges":[]},"yiwiki":{"site":"yiwiki","title":"\u05dc\u05d0\u05e1
         \u05d0\u05e0\u05d3\u05d6\u05e9\u05e2\u05dc\u05e2\u05e1","badges":[]},"yowiki":{"site":"yowiki","title":"Los
         Angeles","badges":[]},"zeawiki":{"site":"zeawiki","title":"Los Angeles","badges":[]},"zh_classicalwiki":{"site":"zh_classicalwiki","title":"\u6d1b\u6749\u78ef","badges":[]},"zh_min_nanwiki":{"site":"zh_min_nanwiki","title":"Lo\u030dk-sam-ki","badges":[]},"zh_yuewiki":{"site":"zh_yuewiki","title":"\u6d1b\u6749\u78ef","badges":[]},"zhwiki":{"site":"zhwiki","title":"\u6d1b\u6749\u77f6","badges":[]},"zhwikivoyage":{"site":"zhwikivoyage","title":"\u6d1b\u6749\u78ef","badges":[]}}}},"success":1}'
-  recorded_at: Fri, 10 Apr 2026 20:47:30 GMT
+  recorded_at: Fri, 10 Apr 2026 22:30:13 GMT
 recorded_with: VCR 6.4.0

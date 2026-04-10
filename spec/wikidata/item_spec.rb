@@ -127,6 +127,22 @@ class ItemTest < Minitest::Test
     assert_nil la_item.sitelink("nonexistent")
   end
 
+  def test_label_language
+    assert_equal "en", la_item.label_language
+  end
+
+  def test_label_is_not_fallback
+    refute la_item.label_is_fallback?
+  end
+
+  def test_label_is_fallback_when_for_language_present
+    item_data = load_fixture("Q65.json")
+    item_data["labels"]["qu"] = {"language" => "mul", "value" => "Los Angeles", "for-language" => "qu"}
+    item = Wikidata::Item.new(item_data)
+    assert item.label_is_fallback?(:qu)
+    assert_equal "mul", item.label_language(:qu)
+  end
+
   def test_inspect
     assert_includes la_item.inspect, "Q65"
     assert_includes la_item.inspect, "Los Angeles"

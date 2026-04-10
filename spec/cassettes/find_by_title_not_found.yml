@@ -2,13 +2,13 @@
 http_interactions:
 - request:
     method: get
-    uri: https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=en&sites=enwiki&titles=Xyzzy_Nonexistent_Page_12345
+    uri: https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languagefallback=&languages=en&sites=enwiki&titles=Xyzzy_Nonexistent_Page_12345
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - Faraday v1.10.3
+      - wikidata-ruby/0.0.4 (https://github.com/wilg/wikidata)
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -19,9 +19,9 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 10 Apr 2026 20:48:48 GMT
+      - Fri, 10 Apr 2026 22:30:13 GMT
       Server:
-      - mw-api-ext.codfw.main-554d4845c9-m2xsh
+      - mw-api-ext.codfw.main-554d4845c9-vg4wf
       X-Content-Type-Options:
       - nosniff
       Content-Security-Policy:
@@ -59,7 +59,7 @@ http_interactions:
         12 May 2026 12:00:00 GMT
       - WMF-Last-Access=10-Apr-2026;Path=/;HttpOnly;secure;Expires=Tue, 12 May 2026
         12:00:00 GMT
-      - WMF-Uniq=k52rhrMUFMq5K3gWOLmThAM-AAAAAFvdhqWLGwK461_IAELShMmjBtmgmPpO4sGh;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
+      - WMF-Uniq=z6jviixWCN_zH5jdD3sSIQM-AAAAAFvd6YEo0Ggqr2qSwIviSR1R8XEQLNTpK_P5;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
         10 Apr 2027 00:00:00 GMT
       X-Client-Ip:
       - 104.54.34.243
@@ -68,11 +68,11 @@ http_interactions:
       Content-Length:
       - '101'
       X-Request-Id:
-      - 5f301411-e2b0-4e37-b131-8038ffdf4aa8
+      - 379daf44-edf9-4e6e-aff3-9667638352fd
       X-Analytics:
       - ''
     body:
       encoding: ASCII-8BIT
       string: '{"entities":{"-1":{"site":"enwiki","title":"Xyzzy_Nonexistent_Page_12345","missing":""}},"success":1}'
-  recorded_at: Fri, 10 Apr 2026 20:48:48 GMT
+  recorded_at: Fri, 10 Apr 2026 22:30:13 GMT
 recorded_with: VCR 6.4.0

@@ -166,11 +166,6 @@ class EntityTest < Minitest::Test
     assert_includes client.headers["User-Agent"], "wikidata-ruby/"
   end
 
-  def test_client_sends_gzip_accept_encoding
-    client = Wikidata::Entity.client
-    assert_equal "gzip", client.headers["Accept-Encoding"]
-  end
-
   def test_custom_user_agent
     original = Wikidata::Configuration.user_agent
     Wikidata::Configuration.user_agent = "MyApp/1.0"

@@ -8,7 +8,7 @@ http_interactions:
       string: ''
     headers:
       User-Agent:
-      - Faraday v1.10.3
+      - wikidata-ruby/0.0.4 (https://github.com/wilg/wikidata)
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -19,13 +19,13 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 10 Apr 2026 20:47:31 GMT
+      - Fri, 10 Apr 2026 22:30:14 GMT
       Server:
-      - mw-api-ext.codfw.main-554d4845c9-4hdt6
+      - mw-api-ext.codfw.main-554d4845c9-pxxxl
       X-Content-Type-Options:
       - nosniff
       X-Search-Id:
-      - cig48ccx78swwaw1n43kb1k3i
+      - dwwh8jodaxryjy04gjjy5qz6q
       Content-Security-Policy:
       - default-src 'self'; script-src 'none'; object-src 'none'
       X-Frame-Options:
@@ -61,7 +61,7 @@ http_interactions:
         12 May 2026 12:00:00 GMT
       - WMF-Last-Access=10-Apr-2026;Path=/;HttpOnly;secure;Expires=Tue, 12 May 2026
         12:00:00 GMT
-      - WMF-Uniq=CZTiUi5WpGZ73ZBPj6b2HgM-AAAAAFvdmnjKnLjPa3aaGzhITDM9wowHwF6PMf4X;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
+      - WMF-Uniq=mCT6-63D7j_w9cA9URi7zgM-AAAAAFvdSmKvcgA_C19tZW0B9xdk281RDvogFmAB;Domain=.wikidata.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Sat,
         10 Apr 2027 00:00:00 GMT
       X-Client-Ip:
       - 104.54.34.243
@@ -70,11 +70,11 @@ http_interactions:
       Content-Length:
       - '71'
       X-Request-Id:
-      - 67e3c010-13a0-455e-8759-895476cc5bee
+      - fde2949a-7b06-4b4b-ad6f-dd1adbd4ee3a
       X-Analytics:
       - ''
     body:
       encoding: ASCII-8BIT
       string: '{"batchcomplete":"","query":{"searchinfo":{"totalhits":0},"search":[]}}'
-  recorded_at: Fri, 10 Apr 2026 20:47:31 GMT
+  recorded_at: Fri, 10 Apr 2026 22:30:14 GMT
 recorded_with: VCR 6.4.0

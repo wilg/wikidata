@@ -38,6 +38,7 @@ class DataValuesTimeTest < Minitest::Test
       "calendarmodel" => "http://www.wikidata.org/entity/Q1985786"
     )
     assert val.julian?
+    assert_includes val.to_s, "(Julian)"
   end
 
   def test_gregorian_calendar

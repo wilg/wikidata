@@ -23,7 +23,9 @@ module Wikidata
       end
 
       def to_s
-        to_time.strftime("%Y-%m-%d")
+        str = to_time.strftime("%Y-%m-%d")
+        str += " (Julian)" if julian?
+        str
       end
     end
   end
